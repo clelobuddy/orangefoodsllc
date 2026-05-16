@@ -973,7 +973,7 @@ function Footer({ setPage }) {
 
         <div style={{ borderTop:"1px solid rgba(255,255,255,.08)", paddingTop:24, display:"flex", justifyContent:"space-between", alignItems:"center", flexWrap:"wrap", gap:12 }}>
           <div style={{ fontFamily:"'Jost',sans-serif", fontSize:12, color:"rgba(255,255,255,.3)" }}>© 2026 Orange Foods LLC & Verde Energy LLC. All rights reserved. Rural Ohio.</div>
-          <div style={{ display:"flex", gap:6" }}>
+          <div style={{ display:"flex", gap:6 }}>
             <span className="trust-badge" style={{ background:"rgba(255,255,255,.05)", border:"1px solid rgba(255,255,255,.1)", color:"rgba(255,255,255,.5)", fontSize:11 }}>☀️ Solar Powered</span>
             <span className="trust-badge" style={{ background:"rgba(255,255,255,.05)", border:"1px solid rgba(255,255,255,.1)", color:"rgba(255,255,255,.5)", fontSize:11 }}>🌿 Ohio Grown</span>
           </div>
