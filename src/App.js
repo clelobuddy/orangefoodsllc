@@ -925,7 +925,7 @@ function HomePage({ setPage, addToCart }) {
   );
 }
 
-export default function NutraceuticalsPage() {
+function NutraceuticalsPage() {
   const [form, setForm] = useState({ name:"", company:"", email:"", grade:"", volume:"", message:"" });
   const [sent, setSent] = useState(false);
 
