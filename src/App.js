@@ -530,7 +530,7 @@ function FarmStoryTeaser({ setPage }) {
               onMouseEnter={e => e.currentTarget.style.transform = "scale(1.03)"}
               onMouseLeave={e => e.currentTarget.style.transform = "scale(1)"}>
               <span style={{ fontSize:40 }}>{card.emoji}</span>
-              <span style={{ fontFamily:"'Jost',sans-serif", fontSize:12, fontWeight:600, color:"rgba(255,255,255,.9)", letterSpacing:".12em", textTransform:"uppercase" }}>{card.label}</span>
+              <span style={{ fontFamily:"'Jost',sans-serif", fontSize:12, fontWeight:600, color:"${T.charcoal}", letterSpacing:".12em", textTransform:"uppercase" }}>{card.label}</span>
             </div>
           ))}
           {/* Badge overlay */}
