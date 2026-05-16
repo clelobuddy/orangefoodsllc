@@ -1182,6 +1182,7 @@ function NutraceuticalsPage() {
 }
 
 function App() {
+  const [page, setPage] = useState("home");
   const [cart, setCart] = useState([]);
   const [cartOpen, setCartOpen] = useState(false);
 
