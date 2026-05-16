@@ -114,18 +114,26 @@ const PRODUCTS = [
   { id:6, name:"Yellow Perch", price:14.99, unit:"lb", cat:"seafood", emoji:"🐠", desc:"Great Lakes' finest, raised sustainably. A regional delicacy with sweet, mild flavor.", badge:"Ohio Proud", color:"#8A6A1E" },
   { id:7, name:"Freshwater Prawns", price:22.99, unit:"lb", cat:"seafood", emoji:"🦐", desc:"Giant freshwater prawns — sweet, tender, domestic. No imported frozen shrimp.", badge:"No Imports", color:"#E05252" },
   { id:8, name:"Farm Box (Weekly)", price:49.99, unit:"box", cat:"subscription", emoji:"📦", desc:"8-10 seasonal items curated weekly. Free delivery within 300 miles.", badge:"Best Value", color:"#2A5C45" },
+  { id:9, name:"Prime Rib Roast", price:54.99, unit:"lb", cat:"beef", emoji:"🥩", desc:"Bone-in prime rib from our Ohio Fields grass-fed herd. Soy-free, dry-aged 21 days. The centerpiece cut.", badge:"Signature Cut", color:"#8B1A1A" },
+  { id:10, name:"Ribeye Steak", price:34.99, unit:"lb", cat:"beef", emoji:"🥩", desc:"Well-marbled, richly flavored grass-fed ribeye. Cut thick to order. Soy-free from pasture to plate.", badge:"Best Seller", color:"#8B1A1A" },
+  { id:11, name:"NY Strip Steak", price:29.99, unit:"lb", cat:"beef", emoji:"🥩", desc:"Lean, tender, and deeply flavorful. Our grass-fed NY strip is the everyday premium steak.", badge:"Ohio Proud", color:"#7A1818" },
+  { id:12, name:"Filet Mignon", price:44.99, unit:"lb", cat:"beef", emoji:"🥩", desc:"The most tender cut from our grass-fed herd. Buttery texture, clean flavor, zero compromise.", badge:"Premium", color:"#8B1A1A" },
+  { id:13, name:"Brisket", price:16.99, unit:"lb", cat:"beef", emoji:"🥩", desc:"Slow-cook ready. Our grass-fed brisket develops deep, rich flavor when given time. Perfect for smoking.", badge:"Pit Master", color:"#6B3A1A" },
+  { id:14, name:"Ground Beef (80/20)", price:9.99, unit:"lb", cat:"beef", emoji:"🥩", desc:"Grass-fed, soy-free ground beef from our Ohio Fields herd. No fillers, no additives. Just beef.", badge:"Everyday Essential", color:"#7A4A2A" },
+  { id:15, name:"Chuck Roast", price:14.99, unit:"lb", cat:"beef", emoji:"🥩", desc:"Slow-braise perfection. Our grass-fed chuck roast breaks down into fork-tender, richly flavored beef.", badge:"Sunday Roast", color:"#6B3A1A" },
+  { id:16, name:"Ohio Beef Box", price:129.99, unit:"box", cat:"subscription", emoji:"📦", desc:"Monthly curated selection of our finest grass-fed cuts — steaks, roasts, and ground beef. Soy-free, always.", badge:"Best Value", color:"#8B1A1A" },
 ];
 
-const NAV_ITEMS = ["Shop","Our Farm","Verde Energy","Why Us","Recipes","About","Wholesale"];
+const NAV_ITEMS = ["Shop","Our Farm","Verde Energy","Nutraceuticals","Recipes","About","Wholesale"];
 
 const TRUST_BADGES = [
   { icon:"☀️", label:"Solar Powered" },
   { icon:"💧", label:"Closed-Loop Water" },
   { icon:"🌿", label:"Ohio Grown" },
   { icon:"🚫", label:"No Brackish Water" },
-  { icon:"🐄", label:"Soy-Free Dairy" },
-  { icon:"🔄", label:"4-Crop Rotation" },
-  { icon:"📍", label:"500K Sq Ft Farm" },
+  { icon:"🐄", label:"Grass-Fed Beef & Dairy" },
+  { icon:"🔄", label:"Soy-Free Always" },
+  { icon:"🧬", label:"Pharmaceutical Chitosan" },
   { icon:"⚡", label:"30.9 MW Solar" },
 ];
 
@@ -216,7 +224,7 @@ function HeroSection({ setPage }) {
 }
 
 function MarqueeBanner() {
-  const items = ["Ohio Grown","Solar Powered","Grass-Fed Dairy","Harvested Fresh Daily","No Brackish Water","Soy-Free Always","Closed-Loop System","30.9 MW Green Energy","Farm to Table","Zero Compromise"];
+  const items = ["Ohio Grown","Solar Powered","Grass-Fed Beef","Harvested Fresh Daily","No Brackish Water","Soy-Free Always","Pharmaceutical Chitosan","Closed-Loop System","30.9 MW Green Energy","Farm to Table","Zero Compromise","Premium Beef Cuts"];
   const doubled = [...items,...items];
   return (
     <div style={{ background:T.orange, padding:"13px 0", overflow:"hidden" }}>
@@ -709,7 +717,7 @@ function Footer({ setPage }) {
 
 function ShopPage({ addToCart }) {
   const [cat, setCat] = useState("all");
-  const cats = ["all","produce","seafood","subscription"];
+  const cats = ["all","produce","seafood","beef","subscription"];
   const filtered = cat==="all"?PRODUCTS:PRODUCTS.filter(p=>p.cat===cat);
   return (
     <div style={{ paddingTop:68 }}>
@@ -917,7 +925,263 @@ function HomePage({ setPage, addToCart }) {
   );
 }
 
-export default function App() {
+export default function NutraceuticalsPage() {
+  const [form, setForm] = useState({ name:"", company:"", email:"", grade:"", volume:"", message:"" });
+  const [sent, setSent] = useState(false);
+
+  const grades = [
+    {
+      grade:"Industrial Grade", purity:"75–85% DDA", price:"$62–67/kg", color:"#2A5C45",
+      icon:"🏭", badge:"Entry Point",
+      apps:["Municipal water treatment","Agricultural flocculant","Wastewater clarification","Soil amendment"],
+      specs:"Ash content <2%, Moisture <10%, Solubility >70%",
+      timeline:"Available Year 1",
+    },
+    {
+      grade:"Food & Cosmetic Grade", purity:"85–95% DDA", price:"$78–140/kg", color:"#E07B28",
+      icon:"✨", badge:"Most Requested",
+      apps:["Hair care & film-forming","Skin care & wound dressings","Food preservation films","Clean beauty formulations"],
+      specs:"FDA GRAS compliant, Ash <1%, Moisture <8%, Non-GMO verified",
+      timeline:"Available Year 2",
+    },
+    {
+      grade:"Pharmaceutical Grade", purity:">95% DDA", price:"$188–273/kg", color:"#1E5C8A",
+      icon:"🧬", badge:"Highest Value",
+      apps:["Drug delivery & encapsulation","Wound care & hemostatic dressings","Tissue engineering scaffolds","Nasal & ocular drug systems"],
+      specs:"USP/EP compliant, GMP manufactured, Full CoA & batch documentation, Low endotoxin",
+      timeline:"Available Year 3+ (GMP certified)",
+    },
+  ];
+
+  const whyFreshwater = [
+    { icon:"💧", title:"Freshwater Origin", body:"Derived from Macrobrachium rosenbergii (giant freshwater prawn) shells — not marine shrimp. Reduced marine allergen profile. Highly valued by cosmetic and nutraceutical formulators seeking alternative sourcing." },
+    { icon:"🇺🇸", title:"Domestic Supply", body:"Over 80% of U.S. chitosan is imported from Asia. Orange Foods produces domestically from our Ohio aquaculture operation — shorter lead times, no import dependencies, traceable from tank to shipment." },
+    { icon:"♻️", title:"Zero Feedstock Cost", body:"Prawn shells are a by-product of our harvest operation. What would otherwise be a disposal cost becomes a premium ingredient. This is genuine circular economy — not a marketing claim." },
+    { icon:"📋", title:"Full Traceability", body:"Every batch is traceable to specific harvest lots from our Ohio facility. Batch documentation, CoA, and supply chain transparency available to all qualified buyers. GMP pathway in development." },
+    { icon:"🌿", title:"Soy-Free Supply Chain", body:"Our prawn herd is raised soy-free on clean aquaponic water. No cross-contamination with common allergens in the production environment. Critical for certain pharma and clean-label cosmetic applications." },
+    { icon:"📈", title:"Consistent Year-Round Supply", body:"Unlike wild-catch marine processors with seasonal variability, our controlled aquaculture operation produces consistent shell volumes year-round — predictable supply for long-term offtake agreements." },
+  ];
+
+  return (
+    <div style={{ paddingTop:68 }}>
+      {/* Hero */}
+      <div style={{ background:"linear-gradient(135deg,#0A1A2E 0%,#0d2a4d 50%,#1a3a6b 100%)", padding:"88px 28px 72px", position:"relative", overflow:"hidden" }}>
+        <div style={{ position:"absolute", inset:0, backgroundImage:"radial-gradient(circle at 70% 30%,rgba(82,183,136,.15) 0%,transparent 55%),radial-gradient(circle at 20% 80%,rgba(30,92,138,.2) 0%,transparent 50%)" }} />
+        <div style={{ maxWidth:1100, margin:"0 auto", position:"relative", zIndex:1 }}>
+          <div className="g2" style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:56, alignItems:"center" }}>
+            <div>
+              <div style={{ display:"inline-flex", alignItems:"center", gap:8, background:"rgba(82,183,136,.15)", border:"1px solid rgba(82,183,136,.3)", borderRadius:20, padding:"6px 16px", marginBottom:20 }}>
+                <div style={{ width:8, height:8, borderRadius:"50%", background:"#52B788", animation:"pulse 1.5s ease infinite" }} />
+                <span style={{ fontFamily:"'Jost',sans-serif", fontSize:10, color:"#52B788", letterSpacing:".18em", textTransform:"uppercase", fontWeight:700 }}>Orange Foods LLC · Nutraceuticals Division</span>
+              </div>
+              <h1 className="display-serif" style={{ fontSize:"clamp(36px,6vw,68px)", color:T.white, lineHeight:1.05, marginBottom:16 }}>
+                Pharmaceutical-Grade<br /><em style={{ color:"#52B788" }}>Freshwater Chitosan</em>
+              </h1>
+              <p style={{ fontFamily:"'Jost',sans-serif", fontSize:16, color:"rgba(255,255,255,.7)", lineHeight:1.8, marginBottom:24, maxWidth:520 }}>
+                Derived from <em style={{ color:"rgba(255,255,255,.9)" }}>Macrobrachium rosenbergii</em> — giant freshwater prawns raised in our Ohio aquaculture facility. Domestic supply. Traceable batches. Three grade tiers from industrial to pharmaceutical.
+              </p>
+              <div style={{ display:"flex", gap:10, flexWrap:"wrap", marginBottom:32 }}>
+                {["Freshwater Origin","Domestic US Supply","FDA GRAS Pathway","GMP Certified (Y3)","Soy-Free Process"].map((b,i) => (
+                  <span key={i} style={{ background:"rgba(82,183,136,.12)", color:"#52B788", border:"1px solid rgba(82,183,136,.3)", borderRadius:20, padding:"4px 12px", fontSize:10, fontFamily:"'Jost',sans-serif", fontWeight:700, letterSpacing:".08em" }}>{b}</span>
+                ))}
+              </div>
+              <button className="btn-primary" style={{ background:"#52B788", boxShadow:"0 4px 24px rgba(82,183,136,.4)" }} onClick={() => document.getElementById("chitosan-inquiry").scrollIntoView({ behavior:"smooth" })}>
+                Request a Sample →
+              </button>
+            </div>
+            {/* Stats panel */}
+            <div style={{ display:"flex", flexDirection:"column", gap:14 }}>
+              <div style={{ background:"rgba(255,255,255,.06)", borderRadius:20, padding:28, border:"1px solid rgba(255,255,255,.1)" }}>
+                <div style={{ fontFamily:"'Jost',sans-serif", fontSize:10, color:"rgba(255,255,255,.5)", letterSpacing:".18em", textTransform:"uppercase", marginBottom:10 }}>Annual Production Capacity</div>
+                <div className="display-serif" style={{ fontSize:52, fontWeight:700, color:"#52B788", lineHeight:1 }}>12–18<span style={{ fontSize:24, color:"rgba(255,255,255,.4)", marginLeft:6 }}>MT/yr</span></div>
+                <div style={{ fontFamily:"'Jost',sans-serif", fontSize:12, color:"rgba(255,255,255,.5)", marginTop:6 }}>Scaling with aquaculture ramp · Year 1 → Year 5</div>
+              </div>
+              <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:12 }}>
+                {[
+                  { n:"$62–273", u:"/kg", label:"Price by Grade" },
+                  { n:">95%", u:"DDA", label:"Pharma Purity" },
+                  { n:"100%", u:"", label:"Domestic Origin" },
+                  { n:"Zero", u:"", label:"Feedstock Cost" },
+                ].map((s,i) => (
+                  <div key={i} style={{ background:"rgba(255,255,255,.05)", borderRadius:14, padding:"16px 14px", border:"1px solid rgba(255,255,255,.08)", textAlign:"center" }}>
+                    <div className="display-serif" style={{ fontSize:26, fontWeight:700, color:"#52B788", lineHeight:1 }}>{s.n}<span style={{ fontSize:13, color:"rgba(255,255,255,.4)" }}>{s.u}</span></div>
+                    <div style={{ fontFamily:"'Jost',sans-serif", fontSize:10, color:"rgba(255,255,255,.5)", marginTop:4, letterSpacing:".08em", textTransform:"uppercase" }}>{s.label}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Grade tiers */}
+      <section className="ps" style={{ padding:"72px 28px", background:"#0D1A24" }}>
+        <div style={{ maxWidth:1100, margin:"0 auto" }}>
+          <div style={{ textAlign:"center", marginBottom:48 }}>
+            <div style={{ fontFamily:"'Jost',sans-serif", fontSize:11, fontWeight:700, letterSpacing:".22em", textTransform:"uppercase", color:"#52B788", display:"flex", alignItems:"center", gap:10, justifyContent:"center", marginBottom:14 }}>
+              <span style={{ display:"block", width:32, height:2, background:"#52B788" }} /> Grade Portfolio
+            </div>
+            <h2 className="display-serif" style={{ fontSize:"clamp(30px,5vw,48px)", color:T.white, marginBottom:12 }}>Three grades. <em style={{ color:"#52B788" }}>One source.</em></h2>
+            <p style={{ fontFamily:"'Jost',sans-serif", fontSize:15, color:"rgba(255,255,255,.55)", maxWidth:520, margin:"0 auto" }}>Phased certification pathway from industrial launch through pharmaceutical GMP. All derived from the same Ohio freshwater prawn operation.</p>
+          </div>
+          <div className="g3" style={{ display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:20 }}>
+            {grades.map((g,i) => (
+              <div key={i} style={{ background:"rgba(255,255,255,.04)", borderRadius:20, padding:28, border:`1px solid ${g.color}33`, position:"relative", overflow:"hidden" }}>
+                <div style={{ position:"absolute", top:0, left:0, right:0, height:3, background:g.color }} />
+                <div style={{ display:"inline-block", background:`${g.color}22`, color:g.color, borderRadius:20, padding:"3px 12px", fontSize:10, fontFamily:"'Jost',sans-serif", fontWeight:700, letterSpacing:".1em", textTransform:"uppercase", marginBottom:16 }}>{g.badge}</div>
+                <div style={{ fontSize:36, marginBottom:12 }}>{g.icon}</div>
+                <h3 className="display-serif" style={{ fontSize:26, color:T.white, marginBottom:6 }}>{g.grade}</h3>
+                <div style={{ fontFamily:"'Jost',sans-serif", fontSize:22, fontWeight:700, color:g.color, marginBottom:4 }}>{g.price}</div>
+                <div style={{ fontFamily:"'Jost',sans-serif", fontSize:11, color:"rgba(255,255,255,.4)", marginBottom:18 }}>Purity: {g.purity}</div>
+                <div style={{ marginBottom:16 }}>
+                  {g.apps.map((app,j) => (
+                    <div key={j} style={{ display:"flex", alignItems:"center", gap:8, marginBottom:7 }}>
+                      <div style={{ width:5, height:5, borderRadius:"50%", background:g.color, flexShrink:0 }} />
+                      <span style={{ fontFamily:"'Jost',sans-serif", fontSize:12, color:"rgba(255,255,255,.65)" }}>{app}</span>
+                    </div>
+                  ))}
+                </div>
+                <div style={{ background:"rgba(255,255,255,.04)", borderRadius:10, padding:"10px 14px", marginBottom:14 }}>
+                  <div style={{ fontFamily:"'Jost',sans-serif", fontSize:9, color:"rgba(255,255,255,.4)", letterSpacing:".12em", textTransform:"uppercase", marginBottom:4 }}>Key Specs</div>
+                  <div style={{ fontFamily:"'Jost',sans-serif", fontSize:11, color:"rgba(255,255,255,.6)", lineHeight:1.55 }}>{g.specs}</div>
+                </div>
+                <div style={{ display:"inline-flex", alignItems:"center", gap:6, background:`${g.color}18`, borderRadius:20, padding:"4px 12px" }}>
+                  <div style={{ width:6, height:6, borderRadius:"50%", background:g.color }} />
+                  <span style={{ fontFamily:"'Jost',sans-serif", fontSize:10, color:g.color, fontWeight:700 }}>{g.timeline}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Why freshwater */}
+      <section className="ps" style={{ padding:"72px 28px", background:"#0A1520" }}>
+        <div style={{ maxWidth:1100, margin:"0 auto" }}>
+          <div style={{ textAlign:"center", marginBottom:48 }}>
+            <div style={{ fontFamily:"'Jost',sans-serif", fontSize:11, fontWeight:700, letterSpacing:".22em", textTransform:"uppercase", color:"#52B788", display:"flex", alignItems:"center", gap:10, justifyContent:"center", marginBottom:14 }}>
+              <span style={{ display:"block", width:32, height:2, background:"#52B788" }} /> Sourcing Advantage
+            </div>
+            <h2 className="display-serif" style={{ fontSize:"clamp(28px,5vw,44px)", color:T.white, marginBottom:12 }}>Why freshwater prawn chitosan <em style={{ color:"#52B788" }}>is different.</em></h2>
+          </div>
+          <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill,minmax(300px,1fr))", gap:20 }}>
+            {whyFreshwater.map((item,i) => (
+              <div key={i} style={{ background:"rgba(255,255,255,.03)", borderRadius:16, padding:24, border:"1px solid rgba(255,255,255,.07)" }}>
+                <div style={{ fontSize:28, marginBottom:12 }}>{item.icon}</div>
+                <h4 style={{ fontFamily:"'Cormorant Garamond',serif", fontSize:22, color:T.white, marginBottom:8 }}>{item.title}</h4>
+                <p style={{ fontFamily:"'Jost',sans-serif", fontSize:13, color:"rgba(255,255,255,.55)", lineHeight:1.7 }}>{item.body}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Market context */}
+      <section className="ps" style={{ padding:"72px 28px", background:"#0D1A24" }}>
+        <div style={{ maxWidth:1100, margin:"0 auto" }}>
+          <div className="g2" style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:56, alignItems:"center" }}>
+            <div>
+              <div style={{ fontFamily:"'Jost',sans-serif", fontSize:11, fontWeight:700, letterSpacing:".22em", textTransform:"uppercase", color:"#52B788", display:"flex", alignItems:"center", gap:10, marginBottom:16 }}>
+                <span style={{ display:"block", width:32, height:2, background:"#52B788" }} /> Market Context
+              </div>
+              <h2 className="display-serif" style={{ fontSize:"clamp(28px,4vw,44px)", color:T.white, lineHeight:1.1, marginBottom:18 }}>
+                A $1.75B market<br /><em style={{ color:"#52B788" }}>growing at 14% annually.</em>
+              </h2>
+              <p style={{ fontFamily:"'Jost',sans-serif", fontSize:15, color:"rgba(255,255,255,.6)", lineHeight:1.8, marginBottom:20 }}>
+                The global chitosan market was valued at $1.75B in 2025 and is projected to reach $6.4B by 2035 — driven by pharmaceutical drug delivery, cosmetic clean-beauty formulations, and agricultural biopesticide demand.
+              </p>
+              <p style={{ fontFamily:"'Jost',sans-serif", fontSize:15, color:"rgba(255,255,255,.6)", lineHeight:1.8, marginBottom:28 }}>
+                Over 80% of U.S. supply is currently imported from Asian marine shrimp processors. Orange Foods represents one of the only domestic freshwater prawn chitosan producers at scale — with supply chain transparency and allergen-profile differentiation that import sources cannot match.
+              </p>
+              <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:14 }}>
+                {[{n:"$1.75B",label:"Global Market (2025)"},{n:"14.3%",label:"Annual CAGR"},{n:">80%",label:"US Import Share"},{n:"3–4×",label:"Pharma vs Industrial Premium"}].map((s,i) => (
+                  <div key={i} style={{ background:"rgba(82,183,136,.08)", borderRadius:12, padding:"16px 14px", border:"1px solid rgba(82,183,136,.2)" }}>
+                    <div className="display-serif" style={{ fontSize:28, fontWeight:700, color:"#52B788", lineHeight:1 }}>{s.n}</div>
+                    <div style={{ fontFamily:"'Jost',sans-serif", fontSize:11, color:"rgba(255,255,255,.5)", marginTop:4 }}>{s.label}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div style={{ display:"flex", flexDirection:"column", gap:14 }}>
+              <div style={{ background:"rgba(255,255,255,.04)", borderRadius:18, padding:24, border:"1px solid rgba(255,255,255,.08)" }}>
+                <div style={{ fontFamily:"'Jost',sans-serif", fontSize:10, color:"rgba(255,255,255,.4)", letterSpacing:".14em", textTransform:"uppercase", marginBottom:12 }}>Target Market Segments</div>
+                {[
+                  { segment:"Pharmaceutical / Biomedical", share:"31%", color:"#1E5C8A", apps:"Drug delivery, wound care, tissue engineering" },
+                  { segment:"Cosmetics & Personal Care", share:"14%", color:"#E07B28", apps:"Hair care, skin care, clean beauty brands" },
+                  { segment:"Agriculture", share:"19%", color:"#52B788", apps:"Biopesticide, seed treatment, soil amendment" },
+                  { segment:"Water Treatment", share:"28%", color:"#2A5C45", apps:"Flocculation, heavy metal removal, clarification" },
+                  { segment:"Food & Packaging", share:"8%", color:"#C9A84C", apps:"Preservation films, packaging coatings" },
+                ].map((seg,i) => (
+                  <div key={i} style={{ display:"flex", alignItems:"center", gap:12, marginBottom:10 }}>
+                    <div style={{ width:36, height:36, borderRadius:8, background:`${seg.color}22`, display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}>
+                      <div style={{ fontFamily:"'Cormorant Garamond',serif", fontSize:13, fontWeight:700, color:seg.color }}>{seg.share}</div>
+                    </div>
+                    <div>
+                      <div style={{ fontFamily:"'Jost',sans-serif", fontSize:12, fontWeight:600, color:T.white }}>{seg.segment}</div>
+                      <div style={{ fontFamily:"'Jost',sans-serif", fontSize:11, color:"rgba(255,255,255,.4)" }}>{seg.apps}</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Inquiry form */}
+      <section id="chitosan-inquiry" className="ps" style={{ padding:"72px 28px", background:"#0A1520" }}>
+        <div style={{ maxWidth:800, margin:"0 auto" }}>
+          <div style={{ textAlign:"center", marginBottom:48 }}>
+            <div style={{ fontFamily:"'Jost',sans-serif", fontSize:11, fontWeight:700, letterSpacing:".22em", textTransform:"uppercase", color:"#52B788", display:"flex", alignItems:"center", gap:10, justifyContent:"center", marginBottom:14 }}>
+              <span style={{ display:"block", width:32, height:2, background:"#52B788" }} /> B2B Inquiries
+            </div>
+            <h2 className="display-serif" style={{ fontSize:"clamp(28px,5vw,44px)", color:T.white, marginBottom:12 }}>Request a Sample or<br /><em style={{ color:"#52B788" }}>Discuss Offtake</em></h2>
+            <p style={{ fontFamily:"'Jost',sans-serif", fontSize:15, color:"rgba(255,255,255,.55)", maxWidth:480, margin:"0 auto" }}>We work with pharmaceutical manufacturers, cosmetic ingredient buyers, agricultural formulators, and water treatment operators. Minimum orders, pricing, and certification documentation available on request.</p>
+          </div>
+          <div style={{ background:"rgba(255,255,255,.04)", borderRadius:22, padding:"40px 36px", border:"1px solid rgba(255,255,255,.08)" }}>
+            {!sent ? (
+              <div style={{ display:"flex", flexDirection:"column", gap:14 }}>
+                <div className="g2" style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:14 }}>
+                  <input placeholder="Your Name" value={form.name} onChange={e => setForm(f=>({...f,name:e.target.value}))} style={{ background:"rgba(255,255,255,.06)", border:"1.5px solid rgba(255,255,255,.12)", color:T.white, borderRadius:10 }} />
+                  <input placeholder="Company / Organization" value={form.company} onChange={e => setForm(f=>({...f,company:e.target.value}))} style={{ background:"rgba(255,255,255,.06)", border:"1.5px solid rgba(255,255,255,.12)", color:T.white, borderRadius:10 }} />
+                </div>
+                <input placeholder="Business Email Address" value={form.email} onChange={e => setForm(f=>({...f,email:e.target.value}))} style={{ background:"rgba(255,255,255,.06)", border:"1.5px solid rgba(255,255,255,.12)", color:T.white, borderRadius:10 }} />
+                <select value={form.grade} onChange={e => setForm(f=>({...f,grade:e.target.value}))} style={{ background:"rgba(255,255,255,.06)", border:"1.5px solid rgba(255,255,255,.12)", color:T.white, borderRadius:10 }}>
+                  <option value="">Grade of Interest...</option>
+                  <option>Industrial Grade ($62–67/kg)</option>
+                  <option>Food & Cosmetic Grade ($78–140/kg)</option>
+                  <option>Pharmaceutical Grade ($188–273/kg)</option>
+                  <option>Multiple Grades / Not Sure Yet</option>
+                </select>
+                <select value={form.volume} onChange={e => setForm(f=>({...f,volume:e.target.value}))} style={{ background:"rgba(255,255,255,.06)", border:"1.5px solid rgba(255,255,255,.12)", color:T.white, borderRadius:10 }}>
+                  <option value="">Annual Volume Requirement...</option>
+                  <option>Under 100 kg (sample / trial)</option>
+                  <option>100 kg – 1 MT</option>
+                  <option>1 MT – 5 MT</option>
+                  <option>5 MT – 15 MT</option>
+                  <option>15 MT+ (long-term offtake)</option>
+                </select>
+                <textarea placeholder="Tell us about your application, required specifications, and any certification needs..." rows={4} value={form.message} onChange={e => setForm(f=>({...f,message:e.target.value}))} style={{ background:"rgba(255,255,255,.06)", border:"1.5px solid rgba(255,255,255,.12)", color:T.white, borderRadius:10, resize:"vertical" }} />
+                <button onClick={() => { if(form.email) setSent(true); }} style={{ background:"#52B788", color:T.white, border:"none", borderRadius:40, padding:"15px 40px", fontFamily:"'Jost',sans-serif", fontSize:14, fontWeight:700, letterSpacing:".08em", textTransform:"uppercase", cursor:"pointer", transition:"all .3s", boxShadow:"0 4px 24px rgba(82,183,136,.4)", marginTop:4 }}>
+                  Submit Inquiry →
+                </button>
+                <p style={{ fontFamily:"'Jost',sans-serif", fontSize:11, color:"rgba(255,255,255,.3)", textAlign:"center", marginTop:4 }}>Our nutraceuticals team responds within 2 business days. No retail sales — B2B inquiries only.</p>
+              </div>
+            ) : (
+              <div style={{ textAlign:"center", padding:"40px 0" }}>
+                <div style={{ fontSize:56, marginBottom:16 }}>🧬</div>
+                <h3 className="display-serif" style={{ fontSize:32, color:"#52B788", marginBottom:10 }}>Inquiry Received</h3>
+                <p style={{ fontFamily:"'Jost',sans-serif", fontSize:14, color:"rgba(255,255,255,.6)", lineHeight:1.7 }}>Our nutraceuticals team will review your requirements and be in touch within 2 business days with pricing, specifications, and sample availability.</p>
+              </div>
+            )}
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+}
+
+function App() {
   const [page, setPage] = useState("home");
   const [cart, setCart] = useState([]);
   const [cartOpen, setCartOpen] = useState(false);
@@ -945,9 +1209,10 @@ export default function App() {
         {page==="shop" && <ShopPage addToCart={addToCart} />}
         {page==="ourfarm" && <OurFarmPage />}
         {page==="verdeenergy" && <VerdeEnergyPage />}
+        {page==="nutraceuticals" && <NutraceuticalsPage />}
         {page==="wholesale" && <WholesalePage />}
         {page==="about" && <AboutPage />}
-        {(page==="recipes"||page==="whyus"||page==="contact") && (
+        {(page==="recipes"||page==="whyus"||page==="contact"||page==="whyus") && (
           <div style={{ paddingTop:68, minHeight:"60vh", display:"flex", alignItems:"center", justifyContent:"center", flexDirection:"column", gap:14 }}>
             <div style={{ fontSize:56 }}>🌱</div>
             <h2 className="display-serif" style={{ fontSize:44, color:T.charcoal }}>Coming Soon</h2>
