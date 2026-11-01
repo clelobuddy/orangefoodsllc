@@ -26,6 +26,7 @@ const G = `
   body { background:${T.cream}; color:${T.charcoal}; font-family:'Jost',sans-serif; overflow-x:hidden; -webkit-font-smoothing:antialiased; }
   a { color:inherit; }
   @keyframes marquee { from{transform:translateX(0);}to{transform:translateX(-50%);} }
+  @keyframes fadein { from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;} }
   @keyframes pulse { 0%,100%{opacity:1;}50%{opacity:.45;} }
   .serif { font-family:'Cormorant Garamond',serif; }
   .wrap { max-width:1160px; margin:0 auto; }
@@ -208,7 +209,7 @@ function CTA({ title, body, primary, secondary }) {
 }
 
 function Marquee() {
-  const items = ["No Seed Oils","Fried in Beef Tallow","Raised in Ohio","Zero Antibiotics","Closed-Loop Water","Traceable to the Tank","Herbs Grown On-Site","Fish Fry Ready"];
+  const items = ["Ohio Walleye & Perch","Fried in Beef Tallow","No Seed Oils","Indoor-Grown Produce","Sturgeon Caviar","Verde Energy","Ohio Fields","Closed-Loop Water","Traceable to the Tank"];
   const d = [...items, ...items];
   return (
     <div style={{ background:T.orange, padding:"13px 0", overflow:"hidden", whiteSpace:"nowrap" }}>
@@ -220,65 +221,77 @@ function Marquee() {
 }
 
 // ── HOME ────────────────────────────────────────────────────────────────────
-function Home() {
-  const segments = [
-    { k:"fish", e:"🐟", t:"Frozen Fish", b:"Raw walleye and perch fillets, plus breaded fillets par-fried in beef tallow.", c:T.lake },
-    { k:"retail", e:"🛒", t:"Retail & Wholesale", b:"Case packs, suggested retail and wholesale pricing for grocers and restaurants.", c:T.orangeD },
-    { k:"produce", e:"🥬", t:"Clean Produce", b:"Indoor-grown cucumbers, butter lettuce, cherry tomatoes and fresh herbs.", c:T.green },
-    { k:"caviar", e:"✨", t:"Sturgeon Caviar", b:"Sterlet and Siberian sturgeon, stocked on day one for future caviar.", c:T.bark },
-    { k:"verde", e:"♻️", t:"Verde Energy", b:"Turning farm waste into biogas, fertilizer and power for the campus.", c:T.greenL },
-    { k:"ohiofields", e:"🌾", t:"Ohio Fields", b:"Traditional farmland that uses our fertilizer and grows soy-free feed.", c:T.tallow },
-  ];
+const SEGMENTS = [
+  { k:"fish", e:"🐟", t:"Frozen Fish", b:"Raw walleye and perch fillets, plus breaded fillets par-fried in beef tallow.", c:T.lake },
+  { k:"produce", e:"🥬", t:"Clean Produce", b:"Indoor-grown cucumbers, butter lettuce, cherry tomatoes and fresh herbs.", c:T.green },
+  { k:"caviar", e:"✨", t:"Sturgeon Caviar", b:"Sterlet and Siberian sturgeon, stocked on day one for future caviar.", c:T.bark },
+  { k:"verde", e:"♻️", t:"Verde Energy", b:"Turning farm waste into biogas, fertilizer and power for the campus.", c:T.greenL },
+  { k:"ohiofields", e:"🌾", t:"Ohio Fields", b:"Traditional farmland that uses our fertilizer and grows soy-free feed.", c:T.tallow },
+  { k:"retail", e:"🛒", t:"Retail & Wholesale", b:"Case packs, suggested retail and wholesale pricing for grocers and restaurants.", c:T.orangeD },
+];
+
+const SLIDES = [
+  { tag:"Orange Foods · Rural Ohio", h:"Fish, produce and energy", a:"from one Ohio farm.", sub:"We're building an integrated farm campus in rural Ohio. Fish, indoor-grown produce, sturgeon caviar, renewable energy and the farmland around it, each feeding the next.", cta:["Explore the Business","company"], bg:`linear-gradient(160deg,${T.lakeD} 0%,${T.lake} 45%,${T.green} 100%)` },
+  { tag:"Frozen Fish", h:"Walleye and perch,", a:"raised in Ohio.", sub:"Frozen fillets, and breaded fillets par-fried in 100% beef tallow instead of seed oils. Processed and frozen right at the farm.", cta:["See the Fish","fish"], bg:`linear-gradient(160deg,${T.lakeD},${T.lake})`, k:"fish" },
+  { tag:"Clean Produce", h:"Produce grown indoors,", a:"on clean water.", sub:"Cucumbers, butter lettuce, cherry tomatoes and fresh herbs, grown away from the field runoff behind most produce recalls.", cta:["See the Produce","produce"], bg:`linear-gradient(160deg,#173826,${T.green})`, k:"produce" },
+  { tag:"Sturgeon Caviar", h:"Ohio caviar,", a:"started on day one.", sub:"Sterlet and Siberian sturgeon go into the water when the farm opens. Ohio's cool groundwater suits them, and the caviar is worth the wait.", cta:["See the Caviar","caviar"], bg:`linear-gradient(160deg,#120d08,#2b1d0c 60%,${T.bark})`, k:"caviar" },
+  { tag:"Verde Energy", h:"Farm waste,", a:"turned into power.", sub:"A digester turns fish solids and plant trimmings into biogas, fertilizer and electricity for the campus.", cta:["See Verde Energy","verde"], bg:`linear-gradient(160deg,#173826,${T.greenL})`, k:"verde" },
+  { tag:"Ohio Fields", h:"The land", a:"around the farm.", sub:"Cropland and pasture fed by our own fertilizer, on a soy-free rotation that keeps the soil healthy.", cta:["See Ohio Fields","ohiofields"], bg:`linear-gradient(160deg,#2b1d0c,${T.bark} 60%,${T.tallow})`, k:"ohiofields" },
+];
+
+function HomeHero() {
+  const [i, setI] = useState(0);
+  const [paused, setPaused] = useState(false);
+  useEffect(() => {
+    if (paused) return;
+    const t = setInterval(() => setI(n => (n + 1) % SLIDES.length), 6500);
+    return () => clearInterval(t);
+  }, [paused]);
+  const s = SLIDES[i];
   return (
-    <>
-      <section style={{ minHeight:"100vh", background:`linear-gradient(160deg,${T.lakeD} 0%,${T.lake} 45%,${T.green} 100%)`, display:"flex", alignItems:"center", position:"relative", overflow:"hidden" }}>
-        <div style={{ position:"absolute", inset:0, backgroundImage:`radial-gradient(circle at 85% 20%,${T.orange}33 0%,transparent 45%)` }} />
-        <div className="wrap" style={{ padding:"120px 28px 80px", position:"relative", width:"100%" }}>
-          <div className="pill" style={{ background:"rgba(255,255,255,.12)", color:"rgba(255,255,255,.9)", marginBottom:26 }}>
-            <span style={{ width:7, height:7, borderRadius:"50%", background:T.orangeL, animation:"pulse 1.6s ease infinite" }} /> In development · Rural Ohio
-          </div>
-          <h1 className="serif" style={{ fontSize:"clamp(46px,8.5vw,104px)", color:T.white, lineHeight:.98, fontWeight:600, maxWidth:900, marginBottom:22 }}>
-            Ohio-raised fish.<br /><em style={{ color:T.orangeL }}>Nothing to hide.</em>
+    <section onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)}
+      style={{ minHeight:"100vh", background:s.bg, transition:"background 1s ease", display:"flex", alignItems:"center", position:"relative", overflow:"hidden" }}>
+      <div style={{ position:"absolute", inset:0, backgroundImage:`radial-gradient(circle at 85% 20%,${T.orange}33 0%,transparent 45%)` }} />
+      <div className="wrap" style={{ padding:"120px 28px 64px", position:"relative", width:"100%" }}>
+        <div className="pill" style={{ background:"rgba(255,255,255,.12)", color:"rgba(255,255,255,.9)", marginBottom:24 }}>
+          <span style={{ width:7, height:7, borderRadius:"50%", background:T.orangeL, animation:"pulse 1.6s ease infinite" }} /> {s.tag}
+        </div>
+        <div key={i} style={{ animation:"fadein .6s ease" }}>
+          <h1 className="serif" style={{ fontSize:"clamp(42px,6.6vw,84px)", color:T.white, lineHeight:1, fontWeight:600, maxWidth:960, marginBottom:22 }}>
+            {s.h}<br /><em style={{ color:T.orangeL }}>{s.a}</em>
           </h1>
-          <p style={{ fontSize:"clamp(16px,2vw,19px)", color:"rgba(255,255,255,.84)", lineHeight:1.7, maxWidth:620, marginBottom:38, fontWeight:300 }}>
-            Frozen walleye and yellow perch, and breaded fillets fried in beef tallow instead of seed oils. All from an indoor farm we're building in rural Ohio, every package traceable to the tank.
-          </p>
+          <p style={{ fontSize:"clamp(16px,2vw,19px)", color:"rgba(255,255,255,.85)", lineHeight:1.7, maxWidth:640, marginBottom:34, fontWeight:300, minHeight:"3.4em" }}>{s.sub}</p>
           <div className="btns" style={{ display:"flex", gap:14, flexWrap:"wrap", alignItems:"center" }}>
-            <a href={href("retail")} className="btn btn-o">For Retailers</a>
-            <a href={href("fish")} className="btn btn-l">See the Products</a>
+            <a href={href(s.cta[1])} className="btn btn-o">{s.cta[0]}</a>
+            <a href={href("retail")} className="btn btn-l">For Retailers</a>
           </div>
         </div>
-      </section>
+        <div style={{ display:"flex", gap:8, flexWrap:"wrap", marginTop:48 }} role="tablist" aria-label="Business segments">
+          {SLIDES.map((sl, n) => (
+            <button key={n} role="tab" aria-selected={n===i} onClick={() => { setI(n); setPaused(true); }}
+              style={{ cursor:"pointer", border:`1px solid ${n===i?T.orangeL:"rgba(255,255,255,.3)"}`, background:n===i?"rgba(255,255,255,.16)":"transparent", color:n===i?T.white:"rgba(255,255,255,.7)", borderRadius:30, padding:"8px 14px", fontFamily:"'Jost',sans-serif", fontSize:12, fontWeight:600, letterSpacing:".06em", transition:"all .25s" }}>
+              {n===0 ? "Overview" : sl.tag}
+            </button>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Home() {
+  return (
+    <>
+      <HomeHero />
       <Marquee />
 
       <section className="sec" style={{ background:T.cream }}>
-        <div className="wrap g2">
-          <div>
-            <div className="label">The Idea</div>
-            <h2 className="h2" style={{ marginBottom:20 }}>The frozen fish fillet,<br /><em style={{ color:T.orange }}>done honestly.</em></h2>
-            <p className="lead" style={{ marginBottom:16 }}>Breaded frozen fish is a Friday-night staple, but the big brands fry it in soybean or canola oil and fill the box with ingredients nobody can pronounce.</p>
-            <p className="lead">We're raising the fish ourselves, frying it in beef tallow, growing the herbs that season it, and keeping the ingredient list short enough to read in the aisle.</p>
-          </div>
-          <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:14 }}>
-            <div className="card" style={{ background:T.parchment, boxShadow:"none" }}>
-              <div style={{ fontSize:11, fontWeight:700, letterSpacing:".14em", textTransform:"uppercase", color:T.stone, marginBottom:18 }}>Typical frozen fish</div>
-              {["Imported or ocean-caught pollock","Fried in soybean or canola oil","Long additive list","Little traceability"].map((t,i) => <div key={i} style={{ display:"flex", gap:10, fontSize:14, color:T.stone, lineHeight:1.5, marginBottom:14 }}><span style={{ color:"#B5523B", fontWeight:700 }}>✕</span>{t}</div>)}
-            </div>
-            <div className="card" style={{ background:T.green, color:T.white, border:"none" }}>
-              <div style={{ fontSize:11, fontWeight:700, letterSpacing:".14em", textTransform:"uppercase", color:T.orangeL, marginBottom:18 }}>Orange Foods</div>
-              {["Ohio-raised walleye & perch","Fried in 100% beef tallow","Short, readable ingredient list","Lot code traces to the tank"].map((t,i) => <div key={i} style={{ display:"flex", gap:10, fontSize:14, lineHeight:1.5, marginBottom:14 }}><span style={{ color:T.orangeL, fontWeight:700 }}>✓</span>{t}</div>)}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="sec" style={{ background:T.parchment }}>
         <div className="wrap">
           <div className="label">The Business</div>
           <h2 className="h2" style={{ marginBottom:14 }}>Six parts. <em style={{ color:T.orange }}>One farm.</em></h2>
           <p className="lead" style={{ marginBottom:40 }}>Every part of Orange Foods feeds another. Here's how the pieces fit, and where to go for each one.</p>
           <div className="g3">
-            {segments.map(s => (
+            {SEGMENTS.map(s => (
               <a key={s.k} href={href(s.k)} className="card" style={{ textDecoration:"none", color:T.charcoal, borderTop:`4px solid ${s.c}`, display:"block", transition:"transform .25s" }}
                 onMouseEnter={e => e.currentTarget.style.transform="translateY(-4px)"} onMouseLeave={e => e.currentTarget.style.transform="none"}>
                 <div style={{ fontSize:34, marginBottom:12 }}>{s.e}</div>
@@ -293,12 +306,13 @@ function Home() {
 
       <section className="sec" style={{ background:T.green, color:T.white }}>
         <div className="wrap">
-          <div className="label" style={{ color:T.orangeL }}>The Loop</div>
-          <h2 className="h2" style={{ marginBottom:40 }}>Everything feeds <em style={{ color:T.orangeL }}>something.</em></h2>
+          <div className="label" style={{ color:T.orangeL }}>How It Connects</div>
+          <h2 className="h2" style={{ marginBottom:14 }}>Everything feeds <em style={{ color:T.orangeL }}>something.</em></h2>
+          <p className="lead" style={{ color:"rgba(255,255,255,.75)", marginBottom:40 }}>The campus is designed as one system, so what one part leaves behind, another part uses.</p>
           <div className="g4">
-            {[["🐟","Fish","Walleye, perch and sturgeon in recirculating tanks."],["💧","Water","Filtered and reused, with a small daily top-up."],["🌿","Plants","Nutrient-rich water feeds our produce and herbs."],["♻️","Energy","Solids become biogas and fertilizer through Verde Energy."]].map(([e,t,b],i) => (
-              <div key={i} style={{ background:"rgba(255,255,255,.08)", border:"1px solid rgba(255,255,255,.12)", borderRadius:20, padding:"24px 20px" }}>
-                <div style={{ fontSize:11, fontWeight:700, letterSpacing:".14em", color:T.orangeL, marginBottom:12 }}>0{i+1}</div>
+            {[["🐟","Fish","Walleye, perch and sturgeon grow in recirculating tanks."],["🌿","Produce","Nutrient-rich water from the fish feeds our produce and herbs."],["♻️","Energy","Fish solids and trimmings become biogas and fertilizer at Verde."],["🌾","Fields","Verde fertilizer goes back onto Ohio Fields farmland."]].map(([e,t,b],n) => (
+              <div key={n} style={{ background:"rgba(255,255,255,.08)", border:"1px solid rgba(255,255,255,.12)", borderRadius:20, padding:"24px 20px" }}>
+                <div style={{ fontSize:11, fontWeight:700, letterSpacing:".14em", color:T.orangeL, marginBottom:12 }}>0{n+1}</div>
                 <div style={{ fontSize:32, marginBottom:10 }}>{e}</div>
                 <h3 className="serif" style={{ fontSize:24, fontWeight:600, marginBottom:6 }}>{t}</h3>
                 <p style={{ fontSize:13, color:"rgba(255,255,255,.72)", lineHeight:1.65 }}>{b}</p>
@@ -310,7 +324,7 @@ function Home() {
 
       <Founder compact />
 
-      <CTA title="Stock Ohio-raised fish." body="We're lining up our first grocery and restaurant partners now. See the catalog, case packs and pricing." primary={["View Retail Catalog", href("retail")]} secondary={["Contact Us", href("contact")]} />
+      <CTA title="Build it with us." body="Grocers, restaurants, investors, landowners and energy partners all have a place in this. Tell us which one you are." primary={["Contact Us", href("contact")]} secondary={["Retail Catalog", href("retail")]} />
     </>
   );
 }
@@ -342,6 +356,27 @@ function Fish() {
     <>
       <PageHero label="Frozen Fish" title="Walleye and perch," accent="frozen at the farm." bg={`linear-gradient(160deg,${T.lakeD},${T.lake})`}
         sub="Two product lines from the same Ohio-raised fish: plain frozen fillets for the home cook, and crispy breaded fillets par-fried in 100% beef tallow for the freezer-to-oven crowd." />
+
+      <section className="sec" style={{ background:T.parchment }}>
+        <div className="wrap g2">
+          <div>
+            <div className="label">Why It's Different</div>
+            <h2 className="h2" style={{ marginBottom:20 }}>A better <em style={{ color:T.orange }}>frozen fish fillet.</em></h2>
+            <p className="lead" style={{ marginBottom:16 }}>Breaded frozen fish is a Friday-night staple, but the big brands fry it in soybean or canola oil and use imported ocean fish.</p>
+            <p className="lead">We raise the fish ourselves, fry it in beef tallow, grow the herbs that season it, and keep the ingredient list short enough to read in the aisle.</p>
+          </div>
+          <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:14 }}>
+            <div className="card" style={{ background:T.cream, boxShadow:"none" }}>
+              <div style={{ fontSize:11, fontWeight:700, letterSpacing:".14em", textTransform:"uppercase", color:T.stone, marginBottom:18 }}>Typical frozen fish</div>
+              {["Imported or ocean-caught pollock","Fried in soybean or canola oil","Long additive list","Little traceability"].map((t,i) => <div key={i} style={{ display:"flex", gap:10, fontSize:14, color:T.stone, lineHeight:1.5, marginBottom:14 }}><span style={{ color:"#B5523B", fontWeight:700 }}>✕</span>{t}</div>)}
+            </div>
+            <div className="card" style={{ background:T.green, color:T.white, border:"none" }}>
+              <div style={{ fontSize:11, fontWeight:700, letterSpacing:".14em", textTransform:"uppercase", color:T.orangeL, marginBottom:18 }}>Orange Foods</div>
+              {["Ohio-raised walleye & perch","Fried in 100% beef tallow","Short, readable ingredient list","Lot code traces to the tank"].map((t,i) => <div key={i} style={{ display:"flex", gap:10, fontSize:14, lineHeight:1.5, marginBottom:14 }}><span style={{ color:T.orangeL, fontWeight:700 }}>✓</span>{t}</div>)}
+            </div>
+          </div>
+        </div>
+      </section>
 
       <section className="sec" style={{ background:T.cream }}>
         <div className="wrap">
@@ -880,7 +915,7 @@ export default function App() {
   const View = VIEWS[route];
   useEffect(() => {
     const name = PAGES.find(([k]) => k === route)[1];
-    document.title = route === "home" ? "Orange Foods LLC — Ohio-Raised Fish, Nothing to Hide" : `${name} — Orange Foods LLC`;
+    document.title = route === "home" ? "Orange Foods LLC — Fish, Produce & Energy from Rural Ohio" : `${name} — Orange Foods LLC`;
   }, [route]);
   return (
     <>
