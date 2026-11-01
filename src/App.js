@@ -1095,7 +1095,7 @@ function Founder({ compact }) {
         <div>
           <div className="label">Leadership</div>
           <h2 className="h2" style={{ marginBottom:6 }}>Eric Cleland</h2>
-          <div style={{ fontSize:13, fontWeight:700, letterSpacing:".14em", textTransform:"uppercase", color:T.orangeD, marginBottom:18 }}>Founder & President</div>
+          <div style={{ fontSize:13, fontWeight:700, letterSpacing:".14em", textTransform:"uppercase", color:T.orangeD, marginBottom:18 }}>Founder, President & CEO</div>
           <p className="lead" style={{ marginBottom:compact?20:14 }}>Eric is an HR and operations leader based in New Albany, Ohio. He manages HR systems and payroll for a multi-location company with more than 1,000 employees across roughly 120 locations, and holds the SPHR (Senior Professional in Human Resources) certification and a B.S. in Human Resources Management from Franklin University.</p>
           {!compact && <p className="lead" style={{ marginBottom:20 }}>As founder of Orange Foods, Eric leads the company's strategy, partnerships and fundraising, and is building the team, including an experienced aquaculture operator, that will run the farm.</p>}
           <div className="btns" style={{ display:"flex", gap:12, flexWrap:"wrap" }}>
