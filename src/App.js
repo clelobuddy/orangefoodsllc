@@ -239,18 +239,54 @@ function Marquee() {
   );
 }
 
-// ── HOME ────────────────────────────────────────────────────────────────────
-const SEGMENTS = [
-  { k:"fish", e:"🐟", t:"Frozen Fish", b:"Raw walleye and perch fillets, plus breaded fillets par-fried in beef tallow.", c:T.lake },
-  { k:"produce", e:"🥬", t:"Clean Produce", b:"Indoor-grown cucumbers, butter lettuce, cherry tomatoes and fresh herbs.", c:T.green },
-  { k:"caviar", e:"✨", t:"Sturgeon Caviar", b:"Sterlet and Siberian sturgeon, stocked on day one for future caviar.", c:T.bark },
-  { k:"verde", e:"⚡", t:"Verde Energy", b:"Solar and biogas that power the whole operation, with surplus energy, credits and fertilizer for sale.", c:T.greenL },
-  { k:"clelandsland", e:"🐄", t:"Cleland's Land", b:"Grass-fed, soy-free beef cattle, hay and cropland across our Ohio land holdings.", c:T.tallow },
-  { k:"retail", e:"🛒", t:"Retail & Wholesale", b:"Case packs, suggested retail and wholesale pricing for grocers and restaurants.", c:T.orangeD },
+// ── COMPANIES ───────────────────────────────────────────────────────────────
+const COMPANIES = [
+  { name:"Orange Foods", legal:"Orange Foods LLC", e:"🍊", c:T.orange, tag:"Fish, produce & caviar",
+    body:"Ohio-raised walleye and perch, frozen and tallow-fried breaded fillets, indoor-grown produce and herbs, and sturgeon caviar.",
+    links:[["Frozen Fish","fish"],["Clean Produce","produce"],["Caviar","caviar"],["Retail & Wholesale","retail"]] },
+  { name:"Verde Energy", legal:"Verde Energy LLC · Verde Products", e:"⚡", c:T.green, tag:"Power, fuel & fertilizer",
+    body:"Up to 30.9 MW of planned solar plus a biogas digester. Powers the whole operation and sells surplus power, credits, gas and fertilizer.",
+    links:[["Verde Energy","verde"]] },
+  { name:"Cleland's Land", legal:"Land & livestock", e:"🐄", c:T.tallow, tag:"Beef, land & equipment",
+    body:"A grass-fed, soy-free beef herd, hay and cropland across our Ohio land, and the equipment that works it.",
+    links:[["Cleland's Land","clelandsland"]] },
 ];
 
+function Companies({ label = "Our Companies", title = "Three companies,", accent = "one system.", lead, bg = T.cream }) {
+  return (
+    <section className="sec" style={{ background:bg }}>
+      <div className="wrap">
+        <div className="label">{label}</div>
+        <h2 className="h2" style={{ marginBottom:14 }}>{title} <em style={{ color:T.orange }}>{accent}</em></h2>
+        {lead && <p className="lead" style={{ marginBottom:40 }}>{lead}</p>}
+        <div className="g3" style={{ alignItems:"stretch" }}>
+          {COMPANIES.map(co => (
+            <div key={co.name} className="card" style={{ borderTop:`5px solid ${co.c}`, display:"flex", flexDirection:"column", padding:"30px 26px" }}>
+              <div style={{ display:"flex", alignItems:"center", gap:12, marginBottom:14 }}>
+                <div style={{ width:52, height:52, borderRadius:14, background:`${co.c}1f`, display:"flex", alignItems:"center", justifyContent:"center", fontSize:26 }}>{co.e}</div>
+                <div>
+                  <h3 className="serif" style={{ fontSize:30, fontWeight:700, lineHeight:1 }}>{co.name}</h3>
+                  <div style={{ fontSize:10, color:T.stone, letterSpacing:".1em", textTransform:"uppercase", marginTop:4 }}>{co.legal}</div>
+                </div>
+              </div>
+              <div style={{ fontSize:12, fontWeight:700, letterSpacing:".12em", textTransform:"uppercase", color:co.c, marginBottom:10 }}>{co.tag}</div>
+              <p style={{ fontSize:14, color:T.stone, lineHeight:1.7, marginBottom:20, flex:1 }}>{co.body}</p>
+              <div style={{ display:"flex", gap:8, flexWrap:"wrap" }}>
+                {co.links.map(([l,k]) => (
+                  <a key={k} href={href(k)} style={{ fontSize:12, fontWeight:700, letterSpacing:".06em", textDecoration:"none", color:co.c, border:`1.5px solid ${co.c}55`, borderRadius:30, padding:"7px 13px" }}>{l} →</a>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ── HOME ────────────────────────────────────────────────────────────────────
 const SLIDES = [
-  { tag:"Consonance Holdings · Rural Ohio", h:"Food and energy,", a:"grown in Ohio.", sub:"Fish, indoor-grown produce, sturgeon caviar, grass-fed beef and the renewable energy that powers it all. Separate businesses, built to feed each other.", cta:["Explore the Business","company"], bg:`linear-gradient(160deg,${T.lakeD} 0%,${T.lake} 45%,${T.green} 100%)` },
+  { tag:"Rural Ohio", h:"Food and energy,", a:"grown in Ohio.", sub:"Three Ohio companies built to feed each other: Orange Foods for fish, produce and caviar, Verde Energy for power, and Cleland's Land for grass-fed beef.", cta:["Meet the Companies","company"], bg:`linear-gradient(160deg,${T.lakeD} 0%,${T.lake} 45%,${T.green} 100%)` },
   { tag:"Frozen Fish", h:"Walleye and perch,", a:"raised in Ohio.", sub:"Frozen fillets, and breaded fillets par-fried in 100% beef tallow instead of seed oils. Processed and frozen right at the farm.", cta:["See the Fish","fish"], bg:`linear-gradient(160deg,${T.lakeD},${T.lake})`, k:"fish" },
   { tag:"Clean Produce", h:"Produce grown indoors,", a:"on clean water.", sub:"Cucumbers, butter lettuce, cherry tomatoes and fresh herbs, grown away from the field runoff behind most produce recalls.", cta:["See the Produce","produce"], bg:`linear-gradient(160deg,#173826,${T.green})`, k:"produce" },
   { tag:"Sturgeon Caviar", h:"Ohio caviar,", a:"started on day one.", sub:"Sterlet and Siberian sturgeon go into the water when the farm opens. Ohio's cool groundwater suits them, and the caviar is worth the wait.", cta:["See the Caviar","caviar"], bg:`linear-gradient(160deg,#120d08,#2b1d0c 60%,${T.bark})`, k:"caviar" },
@@ -305,24 +341,7 @@ function Home() {
       <HomeHero />
       <Marquee />
 
-      <section className="sec" style={{ background:T.cream }}>
-        <div className="wrap">
-          <div className="label">The Business</div>
-          <h2 className="h2" style={{ marginBottom:14 }}>Six parts, <em style={{ color:T.orange }}>one system.</em></h2>
-          <p className="lead" style={{ marginBottom:40 }}>Every part of Orange Foods feeds another. Here's how the pieces fit, and where to go for each one.</p>
-          <div className="g3">
-            {SEGMENTS.map(s => (
-              <a key={s.k} href={href(s.k)} className="card" style={{ textDecoration:"none", color:T.charcoal, borderTop:`4px solid ${s.c}`, display:"block", transition:"transform .25s" }}
-                onMouseEnter={e => e.currentTarget.style.transform="translateY(-4px)"} onMouseLeave={e => e.currentTarget.style.transform="none"}>
-                <div style={{ fontSize:34, marginBottom:12 }}>{s.e}</div>
-                <h3 className="serif" style={{ fontSize:26, fontWeight:600, marginBottom:8 }}>{s.t}</h3>
-                <p style={{ fontSize:14, color:T.stone, lineHeight:1.65, marginBottom:14 }}>{s.b}</p>
-                <span style={{ fontSize:12, fontWeight:700, letterSpacing:".1em", textTransform:"uppercase", color:s.c }}>Learn more →</span>
-              </a>
-            ))}
-          </div>
-        </div>
-      </section>
+      <Companies lead="Each company runs its own business, and each one feeds the others. Here's who does what, and where to go for each." />
 
       <section className="sec" style={{ background:T.green, color:T.white }}>
         <div className="wrap">
@@ -770,7 +789,7 @@ function Verde() {
         <div className="wrap">
           <div className="label" style={{ color:T.orangeL }}>What Verde Sells</div>
           <h2 className="h2" style={{ marginBottom:14 }}>Six ways Verde <em style={{ color:T.orangeL }}>earns.</em></h2>
-          <p className="lead" style={{ color:"rgba(255,255,255,.78)", marginBottom:36 }}>Verde supplies the Consonance companies first, at set internal rates, and sells everything beyond that on the open market.</p>
+          <p className="lead" style={{ color:"rgba(255,255,255,.78)", marginBottom:36 }}>Verde supplies Orange Foods and Cleland's Land first, at set internal rates, and sells everything beyond that on the open market.</p>
           <div className="g3">
             {[
               ["⚡","Power purchase agreements","Long-term electricity contracts with large Ohio buyers, including the state's fast-growing data center market."],
@@ -821,7 +840,7 @@ function ClelandsLand() {
   return (
     <>
       <PageHero label="Cleland's Land" title="Grass-fed Ohio beef," accent="and the land behind it." bg={`linear-gradient(160deg,#2b1d0c,${T.bark} 60%,${T.tallow})`}
-        sub="Cleland's Land is the land and livestock company of Consonance Holdings: a grass-fed beef herd, pasture, hay and cropland across our Ohio land holdings, plus the equipment that works it." />
+        sub="Cleland's Land is our land and livestock company: a grass-fed beef herd, pasture, hay and cropland across our Ohio land holdings, plus the equipment that works it." />
 
       <section className="sec" style={{ background:T.cream }}>
         <div className="wrap">
@@ -921,14 +940,6 @@ function Company() {
     { n:"Module 2", t:"Scale the brand", c:T.green, items:["Expanded fish capacity","Sandwich kits and tartar sauce at scale","Regional grocery and foodservice distribution","More growing space"] },
     { n:"Module 3", t:"Close the loop", c:T.lake, items:["First sturgeon caviar harvests","Verde digester, biogas and fertilizer","On-site solar","Cleland's Land herd and cropland","Full campus complete"] },
   ];
-  const companies = [
-    ["Consonance Holdings","The parent company. It holds all of it."],
-    ["Orange Foods LLC","Fish, produce, caviar and consumer products"],
-    ["Orange Brands LLC","Holds and licenses the brand trademarks"],
-    ["Verde Energy LLC","Solar, biogas and energy sales, with Verde Products LLC for fertilizer"],
-    ["Cleland's Land","Beef cattle, land holdings, cropland and equipment"],
-    ["Orange Shared Services LLC","HR, payroll, finance and admin for every company"],
-  ];
   const now = ["Securing a rural Ohio site","Bringing on an experienced aquaculture operator","Engineering the first building","Talking with Ohio grocers and restaurants","Building research and funding partnerships"];
   return (
     <>
@@ -955,24 +966,7 @@ function Company() {
         </div>
       </section>
       <Founder />
-      <section className="sec" style={{ background:T.cream }}>
-        <div className="wrap g2" style={{ alignItems:"start" }}>
-          <div>
-            <div className="label">How We're Organized</div>
-            <h2 className="h2" style={{ marginBottom:16 }}>A family of <em style={{ color:T.orange }}>companies.</em></h2>
-            <p className="lead">Each business is planned as its own company under Consonance Holdings, so each can be financed, run and measured on its own, while working as one system.</p>
-          </div>
-          <div className="card" style={{ padding:"8px 24px" }}>
-            {companies.map(([n,r],i) => (
-              <div key={n} style={{ padding:"14px 0", borderBottom:i<companies.length-1?`1px solid ${T.parchment}`:"none" }}>
-                <div style={{ fontWeight:700, fontSize:15 }}>{n}</div>
-                <div style={{ fontSize:13, color:T.stone, marginTop:2 }}>{r}</div>
-              </div>
-            ))}
-            <div style={{ fontSize:11, color:T.stone, padding:"10px 0 14px", opacity:.85 }}>Planned structure.</div>
-          </div>
-        </div>
-      </section>
+      <Companies label="Our Companies" title="Three companies," accent="one campus." lead="Each business is its own company, so each can be financed, run and measured on its own, while working together as one system." />
       <CTA title="Help us build it." body="Investors, aquaculture operators, researchers and suppliers: we want to hear from you." primary={["Investor / Partner Inquiry", mail("Investor / partner inquiry")]} secondary={["Contact Page", href("contact")]} />
     </>
   );
@@ -1024,7 +1018,7 @@ function Footer() {
         </div>
       </div>
       <div className="wrap" style={{ borderTop:"1px solid rgba(255,255,255,.08)", marginTop:32, paddingTop:20, fontSize:11, color:"rgba(255,255,255,.38)", display:"flex", justifyContent:"space-between", flexWrap:"wrap", gap:10 }}>
-        <span>© {new Date().getFullYear()} Orange Foods LLC, a Consonance Holdings company. Rural Ohio.</span>
+        <span>© {new Date().getFullYear()} Orange Foods LLC · Verde Energy LLC · Cleland's Land. Rural Ohio.</span>
         <span>Products and prices shown are in development and not yet available for sale.</span>
       </div>
     </footer>
