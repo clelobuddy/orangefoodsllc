@@ -127,16 +127,22 @@ const PRODUCE = [
   { sku:"OP-PA-075", name:"Parsley", spec:"Fresh-cut, clamshell", size:"0.75 oz", srp:2.49, pack:12 },
 ];
 
-// Cleland's Land beef — priced against 2026 direct-to-consumer grass-fed averages (USDA AMS)
-// and Central Ohio farm prices. Retail cuts are frozen, vacuum-sealed, catch weight.
+// Cleland's Land beef — priced to sit with supermarket grass-fed beef (Aldi, Walmart, Kroger, Trader Joe's,
+// Albertsons, 2025–26) rather than farm-direct prices. Retail cuts are frozen, vacuum-sealed, catch weight.
 const BEEF = [
-  { sku:"CL-RE-LB", name:"Ribeye Steak", spec:"Grass-fed, soy-free, frozen, vacuum-sealed", size:"per lb", srp:29.99, pack:10, unit:"lb" },
-  { sku:"CL-NY-LB", name:"New York Strip", spec:"Grass-fed, soy-free, frozen, vacuum-sealed", size:"per lb", srp:26.99, pack:10, unit:"lb" },
-  { sku:"CL-FM-LB", name:"Filet Mignon", spec:"Grass-fed, soy-free, frozen, vacuum-sealed", size:"per lb", srp:39.99, pack:10, unit:"lb" },
-  { sku:"CL-TS-LB", name:"Top Sirloin", spec:"Grass-fed, soy-free, frozen, vacuum-sealed", size:"per lb", srp:18.99, pack:10, unit:"lb" },
-  { sku:"CL-BR-LB", name:"Brisket", spec:"Grass-fed, soy-free, whole or half packer", size:"per lb", srp:14.99, pack:10, unit:"lb" },
-  { sku:"CL-CR-LB", name:"Chuck Roast", spec:"Grass-fed, soy-free, frozen", size:"per lb", srp:12.99, pack:10, unit:"lb" },
-  { sku:"CL-GB-16", name:"Ground Beef 80/20", spec:"Grass-fed, soy-free, nothing added", size:"1 lb pack", srp:9.99, pack:20 },
+  { sku:"CL-RE-LB", name:"Ribeye Steak", spec:"Grass-fed, soy-free, frozen, vacuum-sealed", size:"per lb", srp:22.99, pack:10, unit:"lb" },
+  { sku:"CL-NY-LB", name:"New York Strip", spec:"Grass-fed, soy-free, frozen, vacuum-sealed", size:"per lb", srp:19.99, pack:10, unit:"lb" },
+  { sku:"CL-FM-LB", name:"Filet Mignon", spec:"Grass-fed, soy-free, frozen, vacuum-sealed", size:"per lb", srp:34.99, pack:10, unit:"lb" },
+  { sku:"CL-TS-LB", name:"Top Sirloin", spec:"Grass-fed, soy-free, frozen, vacuum-sealed", size:"per lb", srp:14.99, pack:10, unit:"lb" },
+  { sku:"CL-BR-LB", name:"Brisket", spec:"Grass-fed, soy-free, whole or half packer", size:"per lb", srp:11.99, pack:10, unit:"lb" },
+  { sku:"CL-CR-LB", name:"Chuck Roast", spec:"Grass-fed, soy-free, frozen", size:"per lb", srp:10.99, pack:10, unit:"lb" },
+  { sku:"CL-GB-16", name:"Ground Beef 80/20", spec:"Grass-fed, soy-free, nothing added", size:"1 lb pack", srp:8.99, pack:20 },
+];
+// Wholesale beef for in-store butchers: per lb hanging weight, USDA-inspected slaughter, no cutting.
+// USDA grass-fed report (Q3 2026): whole $5.90, half $5.76, quarter $6.23 per lb hanging, direct sales.
+const CARCASS = [
+  { sku:"CL-WC", name:"Whole carcass", spec:"USDA-inspected, chilled, split sides", perLb:5.75, hang:[500,700] },
+  { sku:"CL-HC", name:"Half carcass (side)", spec:"USDA-inspected, chilled", perLb:5.90, hang:[250,350] },
 ];
 // Bulk freezer beef, per lb hanging weight, cut-and-wrap processing included.
 const FREEZER_BEEF = [
@@ -290,8 +296,8 @@ const SLIDES = [
   { tag:"Frozen Fish", h:"Walleye and perch,", a:"raised in Ohio.", sub:"Frozen fillets, and breaded fillets par-fried in 100% beef tallow instead of seed oils. Processed and frozen right at the farm.", cta:["See the Fish","fish"], bg:`linear-gradient(160deg,${T.lakeD},${T.lake})`, k:"fish" },
   { tag:"Clean Produce", h:"Produce grown indoors,", a:"on clean water.", sub:"Cucumbers, butter lettuce, cherry tomatoes and fresh herbs, grown away from the field runoff behind most produce recalls.", cta:["See the Produce","produce"], bg:`linear-gradient(160deg,#173826,${T.green})`, k:"produce" },
   { tag:"Sturgeon Caviar", h:"Ohio caviar,", a:"started on day one.", sub:"Sterlet and Siberian sturgeon go into the water when the farm opens. Ohio's cool groundwater suits them, and the caviar is worth the wait.", cta:["See the Caviar","caviar"], bg:`linear-gradient(160deg,#120d08,#2b1d0c 60%,${T.bark})`, k:"caviar" },
-  { tag:"Verde Energy", h:"The power behind", a:"the whole operation.", sub:"Up to 30.9 MW of planned solar plus a biogas digester. Verde powers every part of the business and sells what's left over.", cta:["See Verde Energy","verde"], bg:`linear-gradient(160deg,#173826,${T.greenL})`, k:"verde" },
-  { tag:"Cleland's Land", h:"Grass-fed Ohio beef,", a:"and the land behind it.", sub:"A soy-free beef herd, hay and cropland, fertilized by Verde. Steaks, roasts, ground beef and freezer beef by the quarter, half or whole.", cta:["See Cleland's Land","clelandsland"], bg:`linear-gradient(160deg,#2b1d0c,${T.bark} 60%,${T.tallow})`, k:"clelandsland" },
+  { tag:"Verde Energy", h:"The power behind", a:"the whole operation.", sub:"Up to 30.9 MW of planned solar, plus a biogas digester that runs day and night. Verde powers every part of the business and sells what's left over.", cta:["See Verde Energy","verde"], bg:`linear-gradient(160deg,#173826,${T.greenL})`, k:"verde" },
+  { tag:"Cleland's Land", h:"Grass-fed Ohio beef,", a:"and the land behind it.", sub:"A soy-free beef herd, hay and cropland, fertilized by Verde. Case-ready cuts for supermarkets, carcasses for butchers, and freezer beef by the share.", cta:["See Cleland's Land","clelandsland"], bg:`linear-gradient(160deg,#2b1d0c,${T.bark} 60%,${T.tallow})`, k:"clelandsland" },
 ];
 
 const ROTATE_MS = 7000;
@@ -539,8 +545,8 @@ function Retail() {
   const inquiry = "Store or restaurant name:\nCity:\nProducts of interest:\nEstimated weekly cases:\nBest phone number:\n";
   return (
     <>
-      <PageHero label="For Retailers & Restaurants" title="Ohio-raised fish" accent="for your freezer case." bg={`linear-gradient(160deg,#2b1d0c,${T.bark} 55%,${T.orangeD})`}
-        sub="A clean-label frozen fish line your shoppers can't find anywhere else: Ohio-raised walleye and perch, plus breaded fillets par-fried in beef tallow instead of seed oils.">
+      <PageHero label="For Retailers & Restaurants" title="Ohio-raised fish and beef" accent="for your store." bg={`linear-gradient(160deg,#2b1d0c,${T.bark} 55%,${T.orangeD})`}
+        sub="Ohio-raised walleye and perch, breaded fillets par-fried in beef tallow instead of seed oils, indoor-grown produce, and grass-fed Cleland's Land beef, case-ready or by the carcass.">
         <div className="btns" style={{ display:"flex", gap:12, marginTop:30, flexWrap:"wrap" }}>
           <a href={mail("Retail / wholesale inquiry", inquiry)} className="btn btn-o">Request a Sample</a>
           <a href={href("contact")} className="btn btn-l">Other Questions</a>
@@ -551,12 +557,14 @@ function Retail() {
         <div className="wrap">
           <div className="label">Why Stock It</div>
           <h2 className="h2" style={{ marginBottom:36 }}>What it does for <em style={{ color:T.orange }}>your shelf.</em></h2>
-          <div className="g4">
+          <div className="g3">
             {[
               ["🏷️","A real premium tier","Mainstream breaded fish sells for roughly $0.29–$0.44 per ounce. Ours sits at about $1 per ounce, with a story that justifies it."],
               ["🍳","No seed oils","Beef tallow, avocado-oil tartar. Built for the label-reading shopper who skips the frozen fish aisle today."],
-              ["📍","Local and traceable","Ohio-raised and lot-coded to the tank. Something no imported pollock brand can say."],
+              ["📍","Local and traceable","Fish lot-coded to the tank and beef traceable to the herd. Something no imported brand can say."],
               ["🐟","The Friday fish fry","Perch and walleye are Ohio fish-fry favorites, with strong demand in Lent and summer."],
+              ["🥩","Grass-fed Ohio beef","Case-ready steaks, roasts and ground beef under the Cleland's Land label, priced alongside the grass-fed beef already in your case."],
+              ["🔪","For your butcher counter","Whole or half carcasses for stores that cut their own. All beef is slaughtered and processed at a USDA-inspected plant, as retail sale requires."],
             ].map(([e,t,b],i) => (
               <div key={i} className="card">
                 <div style={{ fontSize:30, marginBottom:12 }}>{e}</div>
@@ -618,9 +626,45 @@ function Retail() {
             </div>
           </div>
 
+          <div style={{ marginBottom:34 }}>
+            <div style={{ display:"flex", alignItems:"center", gap:10, marginBottom:12 }}>
+              <span style={{ width:10, height:10, borderRadius:3, background:T.bark }} />
+              <h3 className="serif" style={{ fontSize:26, fontWeight:600 }}>Beef for in-store butchers</h3>
+            </div>
+            <div className="tmob">
+              {CARCASS.map(r => (
+                <div key={r.sku} className="prow">
+                  <div style={{ fontWeight:700, fontSize:15 }}>{r.name}</div>
+                  <div style={{ fontSize:12, color:T.stone, marginTop:2 }}>{r.spec}</div>
+                  <div className="pgrid">
+                    <div><span>Per lb hanging</span><b style={{ color:T.green }}>{money(r.perLb)}</b></div>
+                    <div><span>Typical weight</span>{r.hang[0]}–{r.hang[1]} lb</div>
+                    <div><span>Typical total</span><b>${fmt(Math.round(r.perLb*r.hang[0]/10)*10)}–${fmt(Math.round(r.perLb*r.hang[1]/10)*10)}</b></div>
+                  </div>
+                  <div style={{ fontSize:10, color:T.stone, opacity:.7, marginTop:8 }}>{r.sku}</div>
+                </div>
+              ))}
+            </div>
+            <div className="tscroll tdesk">
+              <table className="ptable" style={{ minWidth:620 }}>
+                <thead><tr><th>Item</th><th className="num">Per lb hanging</th><th className="num">Typical weight</th><th className="num">Typical total</th></tr></thead>
+                <tbody>
+                  {CARCASS.map(r => (
+                    <tr key={r.sku}>
+                      <td><div style={{ fontWeight:600 }}>{r.name}</div><div style={{ fontSize:12, color:T.stone, marginTop:2 }}>{r.spec}</div><div style={{ fontSize:10, color:T.stone, opacity:.7, marginTop:3, letterSpacing:".06em" }}>{r.sku}</div></td>
+                      <td className="num" style={{ fontWeight:700, color:T.green }}>{money(r.perLb)}</td>
+                      <td className="num">{r.hang[0]}–{r.hang[1]} lb</td>
+                      <td className="num" style={{ fontWeight:600 }}>${fmt(Math.round(r.perLb*r.hang[0]/10)*10)}–${fmt(Math.round(r.perLb*r.hang[1]/10)*10)}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
           <div className="card" style={{ background:T.white }}>
             <h3 style={{ fontSize:15, fontWeight:700, marginBottom:10 }}>How we priced it</h3>
-            <p style={{ fontSize:14, color:T.stone, lineHeight:1.7, marginBottom:10 }}>Suggested retail prices are set against what shoppers pay today. Wild walleye fillets currently run about $11–$22 per pound at retail, and Lake Erie perch about $9–$28. Mainstream breaded fish fillets sell for roughly $5.50–$8.50 a box. Grass-fed beef sold direct currently averages about $29/lb for ribeye, $26 for strip, $41 for filet and $10 for ground beef. Wholesale prices above assume a 30% retailer margin; beef steaks are sold by the pound at catch weight.</p>
+            <p style={{ fontSize:14, color:T.stone, lineHeight:1.7, marginBottom:10 }}>Suggested retail prices are set against what shoppers pay today. Wild walleye fillets currently run about $11–$22 per pound at retail, and Lake Erie perch about $9–$28. Mainstream breaded fish fillets sell for roughly $5.50–$8.50 a box. Grass-fed ribeye currently sells for about $14–$27/lb in supermarkets (Aldi to Albertsons), against about $16/lb for conventional ribeye on ad. Our beef is priced in that grass-fed range. Wholesale prices above assume a 30% retailer margin; beef steaks are sold by the pound at catch weight.</p>
             <p style={{ fontSize:13, color:T.stone, lineHeight:1.7 }}>These are target launch prices for a farm still in development. Final pricing, case packs, minimums and delivery terms will be confirmed in writing before the first order. Distributor pricing is available on request.</p>
           </div>
         </div>
@@ -742,11 +786,22 @@ function Caviar() {
 // ── VERDE ENERGY ────────────────────────────────────────────────────────────
 // Ohio solar output: roughly 1,100–1,300 MWh per MW per year depending on mounting.
 // Average US home uses about 10,500 kWh/yr (EIA).
+// Digester: OSU Extension (AEX-653.1) gives ~230 kWh/yr per beef animal at 20% generator efficiency;
+// scaled to a modern 35–40% engine that is ~400 kWh/yr per head when manure is collected year-round,
+// ~200 when cattle are only housed part of the year. Food waste: ~230–270 kWh per wet ton.
+const PER_HEAD = [200, 400];
+const PER_TON = [230, 270];
+const DIGESTER = [
+  { t:"Farm waste only", d:"300 head of cattle, plus fish solids and plant trimmings", head:300, tons:0 },
+  { t:"Plus 5,000 tons of food waste", d:"Food scraps from regional food processors and grocers", head:300, tons:5000 },
+  { t:"Plus 20,000 tons of food waste", d:"A regional food-waste hub", head:300, tons:20000 },
+];
+const dig = (x, k) => x.head * PER_HEAD[k] + x.tons * PER_TON[k]; // kWh per year
 const SOLAR = [
   { phase:"Phase 1", mw:1.5, note:"Rooftop arrays on the first campus buildings" },
   { phase:"Full build", mw:30.9, note:"Rooftop plus ground-mount arrays, financed through power purchase agreements" },
 ];
-const roundTo = (n) => { const step = n >= 10000 ? 100 : n >= 1000 ? 50 : 10; return Math.round(n / step) * step; };
+const roundTo = (n) => { const step = n >= 10000 ? 100 : n >= 100 ? 10 : 1; return Math.round(n / step) * step; };
 const mwh = (mw, f) => roundTo(mw * f);
 const homes = (mw, f) => roundTo(mw * f * 1000 / 10500);
 const fmt = (n) => n.toLocaleString("en-US");
@@ -776,12 +831,43 @@ function Verde() {
               </div>
             ))}
           </div>
-          <div className="g3" style={{ marginTop:20 }}>
-            <div className="card"><div style={{ fontSize:30, marginBottom:10 }}>🔥</div><h3 className="serif" style={{ fontSize:24, fontWeight:600, marginBottom:6 }}>Biogas digester</h3><p style={{ fontSize:14, color:T.stone, lineHeight:1.65 }}>Fish solids, plant trimmings and manure from the Cleland's Land herd become biogas for heat and electricity around the clock, when the sun isn't shining. Output will be sized once feedstock volumes are engineered.</p></div>
+          <div className="g2" style={{ marginTop:20, alignItems:"stretch" }}>
             <div className="card"><div style={{ fontSize:30, marginBottom:10 }}>❄️</div><h3 className="serif" style={{ fontSize:24, fontWeight:600, marginBottom:6 }}>Using less</h3><p style={{ fontSize:14, color:T.stone, lineHeight:1.65 }}>Radiative cooling paint on roofs and walls reflects sunlight and is expected to cut cooling load by 20–30%, so more of what we generate is left to sell.</p></div>
             <div className="card"><div style={{ fontSize:30, marginBottom:10 }}>🔌</div><h3 className="serif" style={{ fontSize:24, fontWeight:600, marginBottom:6 }}>Grid-connected</h3><p style={{ fontSize:14, color:T.stone, lineHeight:1.65 }}>Tied into Ohio's PJM grid, so surplus power can be sold and the campus has a backup when it needs one.</p></div>
           </div>
           <p style={{ fontSize:12, color:T.stone, marginTop:16, lineHeight:1.6 }}>Output estimates use roughly 1,100–1,300 MWh per megawatt per year for Ohio solar, depending on how panels are mounted, and an average U.S. home's use of about 10,500 kWh a year. Final figures depend on site and engineering.</p>
+        </div>
+      </section>
+
+      <section className="sec" style={{ background:T.white }}>
+        <div className="wrap">
+          <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-end", gap:20, flexWrap:"wrap", marginBottom:16 }}>
+            <div><div className="label">The Digester</div><h2 className="h2">Power that runs <em style={{ color:T.green }}>day and night.</em></h2></div>
+            <Status>Planning estimates</Status>
+          </div>
+          <p className="lead" style={{ marginBottom:30 }}>Solar only works when the sun is up. The digester runs around the clock, turning manure, fish solids, plant trimmings and food waste into biogas. That gas fuels a generator for electricity and gives off about as much again in heat, which warms the fish tanks.</p>
+          <div className="g3">
+            {DIGESTER.map((x,i) => {
+              const lo = dig(x,0), hi = dig(x,1);
+              return (
+                <div key={x.t} className="card" style={{ borderTop:`4px solid ${[T.tallow,T.greenL,T.green][i]}` }}>
+                  <div style={{ fontSize:11, fontWeight:700, letterSpacing:".14em", textTransform:"uppercase", color:[T.tallow,T.greenL,T.green][i], marginBottom:8 }}>Scenario {i+1}</div>
+                  <h3 className="serif" style={{ fontSize:24, fontWeight:600, marginBottom:4 }}>{x.t}</h3>
+                  <p style={{ fontSize:13, color:T.stone, lineHeight:1.55, marginBottom:16 }}>{x.d}</p>
+                  <div style={{ display:"grid", gap:12, paddingTop:14, borderTop:`1px solid ${T.parchment}` }}>
+                    <div><div style={{ fontSize:10, fontWeight:700, letterSpacing:".12em", textTransform:"uppercase", color:T.stone }}>Electricity / year</div><div style={{ fontSize:19, fontWeight:700 }}>{fmt(roundTo(lo/1000))}–{fmt(roundTo(hi/1000))} MWh</div></div>
+                    <div><div style={{ fontSize:10, fontWeight:700, letterSpacing:".12em", textTransform:"uppercase", color:T.stone }}>Steady output</div><div style={{ fontSize:19, fontWeight:700 }}>about {fmt(roundTo(lo/8760))}–{fmt(roundTo(hi/8760))} kW</div></div>
+                    <div><div style={{ fontSize:10, fontWeight:700, letterSpacing:".12em", textTransform:"uppercase", color:T.stone }}>Equal to powering</div><div style={{ fontSize:19, fontWeight:700 }}>~{fmt(roundTo(lo/10500))}–{fmt(roundTo(hi/10500))} homes</div></div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+          <div className="card" style={{ marginTop:20, background:T.greenXL, boxShadow:"none", border:"none" }}>
+            <h3 style={{ fontSize:15, fontWeight:700, marginBottom:8, color:T.green }}>Why food waste matters</h3>
+            <p style={{ fontSize:14, color:T.stone, lineHeight:1.7 }}>Grass-fed cattle spend most of the year on pasture, so only part of their manure can be collected. Food waste makes far more gas per ton than manure, and food companies pay digesters to take it, typically about $30–$50 a ton, so it adds both power and revenue.</p>
+          </div>
+          <p style={{ fontSize:12, color:T.stone, marginTop:16, lineHeight:1.6 }}>Estimates assume about 200–400 kWh a year per head of cattle (depending on how much of the year they're housed) and about 230–270 kWh per ton of food waste, based on Ohio State University Extension figures and a modern biogas engine. Herd size and food-waste volumes are planning examples, not commitments. The digester will be sized during engineering.</p>
         </div>
       </section>
 
@@ -793,10 +879,10 @@ function Verde() {
           <div className="g3">
             {[
               ["⚡","Power purchase agreements","Long-term electricity contracts with large Ohio buyers, including the state's fast-growing data center market."],
-              ["📜","Renewable energy credits","Credits from every megawatt-hour of solar and biogas, sold to companies meeting clean-energy targets."],
-              ["🌍","Carbon credits","Credits from capturing methane that would otherwise escape from manure and fish waste."],
+              ["📜","Energy & carbon credits","Renewable energy credits from every megawatt-hour, plus carbon credits for capturing methane that would otherwise escape."],
               ["🔥","Compressed biogas & RNG","Upgraded biogas sold as compressed biogas, and later as renewable natural gas into the pipeline."],
               ["🫧","Food-grade CO₂","Carbon dioxide captured from biogas for greenhouse growing and beverage use."],
+              ["🚛","Food-waste tipping fees","Food processors and grocers pay to drop off food waste, which becomes biogas, typically about $30–$50 a ton."],
               ["🌱","Verde Products fertilizer","Bagged and bulk liquid fertilizer for farms, landscapers and garden centers, then a branded aquaponic blend."],
             ].map(([e,t,b],i) => (
               <div key={i} style={{ background:"rgba(255,255,255,.08)", border:"1px solid rgba(255,255,255,.12)", borderRadius:20, padding:"24px 22px" }}>
@@ -816,7 +902,7 @@ function Verde() {
           <div className="g3">
             {[
               ["Stage 1","Phase 1 rooftop solar · bagged digestate and bulk liquid fertilizer"],
-              ["Stage 2","Digester online · compressed biogas · branded Verde Grow Aquaponic Blend"],
+              ["Stage 2","Digester online · food-waste intake · compressed biogas · branded Verde Grow Aquaponic Blend"],
               ["Stage 3","Full 30.9 MW solar · food-grade CO₂ · renewable natural gas · power purchase agreements"],
             ].map(([n,b],i) => (
               <div key={n} className="card" style={{ borderTop:`4px solid ${[T.orange,T.greenL,T.green][i]}` }}>
@@ -897,12 +983,30 @@ function ClelandsLand() {
 
           <div className="card" style={{ marginTop:20, background:T.white }}>
             <h3 style={{ fontSize:15, fontWeight:700, marginBottom:8 }}>How we priced it</h3>
-            <p style={{ fontSize:14, color:T.stone, lineHeight:1.7 }}>Beef prices are at record highs in 2026. USDA's grass-fed beef report puts direct-to-consumer averages at about $29/lb for ribeye, $26 for strip, $41 for filet mignon, $13 for chuck roast and $10 for ground beef. Central Ohio farms are selling grass-fed freezer beef for about $7.50–$8.00/lb hanging weight with processing included. Our prices sit in those ranges. Final pricing will be set when the herd is ready for market. Wholesale pricing is on the <a href={href("retail")} style={{ color:T.orangeD, fontWeight:600 }}>Retail & Wholesale</a> page.</p>
+            <p style={{ fontSize:14, color:T.stone, lineHeight:1.7 }}>Our cut prices are set to sit on a supermarket shelf next to other grass-fed beef. Grass-fed ribeye runs about $14/lb at Aldi, $20 at Walmart and $24–$27 at Kroger, Trader Joe's and Albertsons, while conventional ribeye averages about $16/lb on ad. Central Ohio farms sell grass-fed freezer beef for about $7.50–$8.00/lb hanging weight with processing included. Final pricing will be set when the herd is ready for market.</p>
           </div>
         </div>
       </section>
 
-      <CTA title="Reserve beef, or talk land." body="Join the freezer beef list, or if you own land in Central Ohio, we'd like to hear from you." primary={["Join the Beef List", mail("Cleland's Land beef list")]} secondary={["Talk Land", mail("Land / site inquiry")]} />
+      <section className="sec" style={{ background:T.cream }}>
+        <div className="wrap">
+          <div className="label">For Supermarkets & Butchers</div>
+          <h2 className="h2" style={{ marginBottom:14 }}>Ohio beef, <em style={{ color:T.tallow }}>three ways to buy it.</em></h2>
+          <p className="lead" style={{ marginBottom:32 }}>Every animal is slaughtered and processed at a USDA-inspected plant, which is what retail sale requires.</p>
+          <div className="g3">
+            {[
+              ["📦","Case-ready cuts","Frozen, vacuum-sealed steaks, roasts and ground beef under the Cleland's Land label, ready for your meat case. Sold by the pound in 10 lb cases."],
+              ["🔪","Carcasses for your butcher","Whole carcasses or sides, hanging weight, for stores and butcher shops that cut their own."],
+              ["🍽️","Restaurants","Steaks, ground beef and brisket for Ohio restaurants that want a local, grass-fed beef on the menu."],
+            ].map(([e,t,b],i) => (
+              <div key={i} className="card"><div style={{ fontSize:32, marginBottom:10 }}>{e}</div><h3 className="serif" style={{ fontSize:24, fontWeight:600, marginBottom:6 }}>{t}</h3><p style={{ fontSize:14, color:T.stone, lineHeight:1.65 }}>{b}</p></div>
+            ))}
+          </div>
+          <div style={{ marginTop:24 }}><a href={href("retail")} className="btn btn-g">Wholesale beef pricing</a></div>
+        </div>
+      </section>
+
+      <CTA title="Buy Cleland's Land beef." body="Supermarkets and restaurants, reach out for wholesale. Families, join the freezer beef list. Central Ohio landowners, we'd like to hear from you too." primary={["Wholesale Beef", mail("Cleland's Land wholesale beef")]} secondary={["Join the Beef List", mail("Cleland's Land beef list")]} />
     </>
   );
 }
