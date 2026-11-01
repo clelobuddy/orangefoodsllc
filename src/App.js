@@ -26,6 +26,7 @@ const G = `
   body { background:${T.cream}; color:${T.charcoal}; font-family:'Jost',sans-serif; overflow-x:hidden; -webkit-font-smoothing:antialiased; }
   a { color:inherit; }
   @keyframes marquee { from{transform:translateX(0);}to{transform:translateX(-50%);} }
+  @keyframes progress { from{width:0;} to{width:100%;} }
   @keyframes fadein { from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;} }
   @keyframes pulse { 0%,100%{opacity:1;}50%{opacity:.45;} }
   .serif { font-family:'Cormorant Garamond',serif; }
@@ -78,7 +79,7 @@ const G = `
 // ── Routing (hash-based, so every link works on static hosting) ─────────────
 const PAGES = [
   ["home","Home"], ["fish","Frozen Fish"], ["retail","Retail & Wholesale"], ["produce","Clean Produce"],
-  ["caviar","Caviar"], ["verde","Verde Energy"], ["ohiofields","Ohio Fields"], ["company","About"], ["contact","Contact"],
+  ["caviar","Caviar"], ["verde","Verde Energy"], ["clelandsland","Cleland's Land"], ["company","About"], ["contact","Contact"],
 ];
 const NAV = PAGES.filter(([k]) => !["home","contact"].includes(k));
 const href = (key) => `#/${key}`;
@@ -124,6 +125,24 @@ const PRODUCE = [
   { sku:"OP-BA-075", name:"Basil", spec:"Fresh-cut, clamshell", size:"0.75 oz", srp:2.99, pack:12 },
   { sku:"OP-DI-075", name:"Dill", spec:"Fresh-cut, clamshell", size:"0.75 oz", srp:2.99, pack:12 },
   { sku:"OP-PA-075", name:"Parsley", spec:"Fresh-cut, clamshell", size:"0.75 oz", srp:2.49, pack:12 },
+];
+
+// Cleland's Land beef — priced against 2026 direct-to-consumer grass-fed averages (USDA AMS)
+// and Central Ohio farm prices. Retail cuts are frozen, vacuum-sealed, catch weight.
+const BEEF = [
+  { sku:"CL-RE-LB", name:"Ribeye Steak", spec:"Grass-fed, soy-free, frozen, vacuum-sealed", size:"per lb", srp:29.99, pack:10, unit:"lb" },
+  { sku:"CL-NY-LB", name:"New York Strip", spec:"Grass-fed, soy-free, frozen, vacuum-sealed", size:"per lb", srp:26.99, pack:10, unit:"lb" },
+  { sku:"CL-FM-LB", name:"Filet Mignon", spec:"Grass-fed, soy-free, frozen, vacuum-sealed", size:"per lb", srp:39.99, pack:10, unit:"lb" },
+  { sku:"CL-TS-LB", name:"Top Sirloin", spec:"Grass-fed, soy-free, frozen, vacuum-sealed", size:"per lb", srp:18.99, pack:10, unit:"lb" },
+  { sku:"CL-BR-LB", name:"Brisket", spec:"Grass-fed, soy-free, whole or half packer", size:"per lb", srp:14.99, pack:10, unit:"lb" },
+  { sku:"CL-CR-LB", name:"Chuck Roast", spec:"Grass-fed, soy-free, frozen", size:"per lb", srp:12.99, pack:10, unit:"lb" },
+  { sku:"CL-GB-16", name:"Ground Beef 80/20", spec:"Grass-fed, soy-free, nothing added", size:"1 lb pack", srp:9.99, pack:20 },
+];
+// Bulk freezer beef, per lb hanging weight, cut-and-wrap processing included.
+const FREEZER_BEEF = [
+  { name:"Quarter", perLb:7.99, hang:[125,175] },
+  { name:"Half", perLb:7.75, hang:[250,350] },
+  { name:"Whole", perLb:7.50, hang:[500,700] },
 ];
 
 // ── Shared UI ───────────────────────────────────────────────────────────────
@@ -209,7 +228,7 @@ function CTA({ title, body, primary, secondary }) {
 }
 
 function Marquee() {
-  const items = ["Ohio Walleye & Perch","Fried in Beef Tallow","No Seed Oils","Indoor-Grown Produce","Sturgeon Caviar","Verde Energy","Ohio Fields","Closed-Loop Water","Traceable to the Tank"];
+  const items = ["Ohio Walleye & Perch","Fried in Beef Tallow","No Seed Oils","Indoor-Grown Produce","Sturgeon Caviar","Verde Energy","Grass-Fed Ohio Beef","Closed-Loop Water","Traceable to the Tank"];
   const d = [...items, ...items];
   return (
     <div style={{ background:T.orange, padding:"13px 0", overflow:"hidden", whiteSpace:"nowrap" }}>
@@ -225,32 +244,32 @@ const SEGMENTS = [
   { k:"fish", e:"🐟", t:"Frozen Fish", b:"Raw walleye and perch fillets, plus breaded fillets par-fried in beef tallow.", c:T.lake },
   { k:"produce", e:"🥬", t:"Clean Produce", b:"Indoor-grown cucumbers, butter lettuce, cherry tomatoes and fresh herbs.", c:T.green },
   { k:"caviar", e:"✨", t:"Sturgeon Caviar", b:"Sterlet and Siberian sturgeon, stocked on day one for future caviar.", c:T.bark },
-  { k:"verde", e:"♻️", t:"Verde Energy", b:"Turning farm waste into biogas, fertilizer and power for the campus.", c:T.greenL },
-  { k:"ohiofields", e:"🌾", t:"Ohio Fields", b:"Traditional farmland that uses our fertilizer and grows soy-free feed.", c:T.tallow },
+  { k:"verde", e:"⚡", t:"Verde Energy", b:"Solar and biogas that power the whole operation, with surplus energy, credits and fertilizer for sale.", c:T.greenL },
+  { k:"clelandsland", e:"🐄", t:"Cleland's Land", b:"Grass-fed, soy-free beef cattle, hay and cropland across our Ohio land holdings.", c:T.tallow },
   { k:"retail", e:"🛒", t:"Retail & Wholesale", b:"Case packs, suggested retail and wholesale pricing for grocers and restaurants.", c:T.orangeD },
 ];
 
 const SLIDES = [
-  { tag:"Orange Foods · Rural Ohio", h:"Fish, produce and energy", a:"from one Ohio farm.", sub:"We're building an integrated farm campus in rural Ohio. Fish, indoor-grown produce, sturgeon caviar, renewable energy and the farmland around it, each feeding the next.", cta:["Explore the Business","company"], bg:`linear-gradient(160deg,${T.lakeD} 0%,${T.lake} 45%,${T.green} 100%)` },
+  { tag:"Consonance Holdings · Rural Ohio", h:"Food and energy,", a:"grown in Ohio.", sub:"Fish, indoor-grown produce, sturgeon caviar, grass-fed beef and the renewable energy that powers it all. Separate businesses, built to feed each other.", cta:["Explore the Business","company"], bg:`linear-gradient(160deg,${T.lakeD} 0%,${T.lake} 45%,${T.green} 100%)` },
   { tag:"Frozen Fish", h:"Walleye and perch,", a:"raised in Ohio.", sub:"Frozen fillets, and breaded fillets par-fried in 100% beef tallow instead of seed oils. Processed and frozen right at the farm.", cta:["See the Fish","fish"], bg:`linear-gradient(160deg,${T.lakeD},${T.lake})`, k:"fish" },
   { tag:"Clean Produce", h:"Produce grown indoors,", a:"on clean water.", sub:"Cucumbers, butter lettuce, cherry tomatoes and fresh herbs, grown away from the field runoff behind most produce recalls.", cta:["See the Produce","produce"], bg:`linear-gradient(160deg,#173826,${T.green})`, k:"produce" },
   { tag:"Sturgeon Caviar", h:"Ohio caviar,", a:"started on day one.", sub:"Sterlet and Siberian sturgeon go into the water when the farm opens. Ohio's cool groundwater suits them, and the caviar is worth the wait.", cta:["See the Caviar","caviar"], bg:`linear-gradient(160deg,#120d08,#2b1d0c 60%,${T.bark})`, k:"caviar" },
-  { tag:"Verde Energy", h:"Farm waste,", a:"turned into power.", sub:"A digester turns fish solids and plant trimmings into biogas, fertilizer and electricity for the campus.", cta:["See Verde Energy","verde"], bg:`linear-gradient(160deg,#173826,${T.greenL})`, k:"verde" },
-  { tag:"Ohio Fields", h:"The land", a:"around the farm.", sub:"Cropland and pasture fed by our own fertilizer, on a soy-free rotation that keeps the soil healthy.", cta:["See Ohio Fields","ohiofields"], bg:`linear-gradient(160deg,#2b1d0c,${T.bark} 60%,${T.tallow})`, k:"ohiofields" },
+  { tag:"Verde Energy", h:"The power behind", a:"the whole operation.", sub:"Up to 30.9 MW of planned solar plus a biogas digester. Verde powers every part of the business and sells what's left over.", cta:["See Verde Energy","verde"], bg:`linear-gradient(160deg,#173826,${T.greenL})`, k:"verde" },
+  { tag:"Cleland's Land", h:"Grass-fed Ohio beef,", a:"and the land behind it.", sub:"A soy-free beef herd, hay and cropland, fertilized by Verde. Steaks, roasts, ground beef and freezer beef by the quarter, half or whole.", cta:["See Cleland's Land","clelandsland"], bg:`linear-gradient(160deg,#2b1d0c,${T.bark} 60%,${T.tallow})`, k:"clelandsland" },
 ];
+
+const ROTATE_MS = 7000;
 
 function HomeHero() {
   const [i, setI] = useState(0);
-  const [paused, setPaused] = useState(false);
+  const [cycle, setCycle] = useState(0);
   useEffect(() => {
-    if (paused) return;
-    const t = setInterval(() => setI(n => (n + 1) % SLIDES.length), 6500);
-    return () => clearInterval(t);
-  }, [paused]);
+    const t = setTimeout(() => setI(n => (n + 1) % SLIDES.length), ROTATE_MS);
+    return () => clearTimeout(t);
+  }, [i, cycle]);
   const s = SLIDES[i];
   return (
-    <section onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)}
-      style={{ minHeight:"100vh", background:s.bg, transition:"background 1s ease", display:"flex", alignItems:"center", position:"relative", overflow:"hidden" }}>
+    <section style={{ minHeight:"100vh", background:s.bg, transition:"background 1s ease", display:"flex", alignItems:"center", position:"relative", overflow:"hidden" }}>
       <div style={{ position:"absolute", inset:0, backgroundImage:`radial-gradient(circle at 85% 20%,${T.orange}33 0%,transparent 45%)` }} />
       <div className="wrap" style={{ padding:"120px 28px 64px", position:"relative", width:"100%" }}>
         <div className="pill" style={{ background:"rgba(255,255,255,.12)", color:"rgba(255,255,255,.9)", marginBottom:24 }}>
@@ -268,9 +287,10 @@ function HomeHero() {
         </div>
         <div style={{ display:"flex", gap:8, flexWrap:"wrap", marginTop:48 }} role="tablist" aria-label="Business segments">
           {SLIDES.map((sl, n) => (
-            <button key={n} role="tab" aria-selected={n===i} onClick={() => { setI(n); setPaused(true); }}
-              style={{ cursor:"pointer", border:`1px solid ${n===i?T.orangeL:"rgba(255,255,255,.3)"}`, background:n===i?"rgba(255,255,255,.16)":"transparent", color:n===i?T.white:"rgba(255,255,255,.7)", borderRadius:30, padding:"8px 14px", fontFamily:"'Jost',sans-serif", fontSize:12, fontWeight:600, letterSpacing:".06em", transition:"all .25s" }}>
+            <button key={n} role="tab" aria-selected={n===i} onClick={() => { setI(n); setCycle(c => c + 1); }}
+              style={{ position:"relative", overflow:"hidden", cursor:"pointer", border:`1px solid ${n===i?T.orangeL:"rgba(255,255,255,.3)"}`, background:n===i?"rgba(255,255,255,.16)":"transparent", color:n===i?T.white:"rgba(255,255,255,.7)", borderRadius:30, padding:"8px 14px", fontFamily:"'Jost',sans-serif", fontSize:12, fontWeight:600, letterSpacing:".06em", transition:"all .25s" }}>
               {n===0 ? "Overview" : sl.tag}
+              {n===i && <span key={`${i}-${cycle}`} aria-hidden="true" style={{ position:"absolute", left:0, bottom:0, height:2, background:T.orangeL, animation:`progress ${ROTATE_MS}ms linear forwards` }} />}
             </button>
           ))}
         </div>
@@ -288,7 +308,7 @@ function Home() {
       <section className="sec" style={{ background:T.cream }}>
         <div className="wrap">
           <div className="label">The Business</div>
-          <h2 className="h2" style={{ marginBottom:14 }}>Six parts. <em style={{ color:T.orange }}>One farm.</em></h2>
+          <h2 className="h2" style={{ marginBottom:14 }}>Six parts, <em style={{ color:T.orange }}>one system.</em></h2>
           <p className="lead" style={{ marginBottom:40 }}>Every part of Orange Foods feeds another. Here's how the pieces fit, and where to go for each one.</p>
           <div className="g3">
             {SEGMENTS.map(s => (
@@ -310,7 +330,7 @@ function Home() {
           <h2 className="h2" style={{ marginBottom:14 }}>Everything feeds <em style={{ color:T.orangeL }}>something.</em></h2>
           <p className="lead" style={{ color:"rgba(255,255,255,.75)", marginBottom:40 }}>The campus is designed as one system, so what one part leaves behind, another part uses.</p>
           <div className="g4">
-            {[["🐟","Fish","Walleye, perch and sturgeon grow in recirculating tanks."],["🌿","Produce","Nutrient-rich water from the fish feeds our produce and herbs."],["♻️","Energy","Fish solids and trimmings become biogas and fertilizer at Verde."],["🌾","Fields","Verde fertilizer goes back onto Ohio Fields farmland."]].map(([e,t,b],n) => (
+            {[["🐟","Fish","Nutrient-rich water from the fish tanks feeds our produce and herbs."],["🐄","Cattle","Manure from the Cleland's Land herd joins fish solids at the Verde digester."],["⚡","Energy","Verde turns that waste into biogas, adds solar, and powers everything."],["🌾","Land","Verde fertilizer goes back onto Cleland's Land pasture and cropland."]].map(([e,t,b],n) => (
               <div key={n} style={{ background:"rgba(255,255,255,.08)", border:"1px solid rgba(255,255,255,.12)", borderRadius:20, padding:"24px 20px" }}>
                 <div style={{ fontSize:11, fontWeight:700, letterSpacing:".14em", color:T.orangeL, marginBottom:12 }}>0{n+1}</div>
                 <div style={{ fontSize:32, marginBottom:10 }}>{e}</div>
@@ -465,7 +485,7 @@ function PriceTable({ rows, title, tone }) {
                 <div><span>Size</span>{r.size}</div>
                 <div><span>Suggested retail</span>{money(r.srp)}</div>
                 <div><span>Wholesale / unit</span><b style={{ color:T.green }}>{money(w)}</b></div>
-                <div><span>Case ({r.pack} ct)</span><b>{money(w * r.pack)}</b></div>
+                <div><span>Case ({r.pack} {r.unit||"ct"})</span><b>{money(w * r.pack)}</b></div>
               </div>
               <div style={{ fontSize:10, color:T.stone, opacity:.7, marginTop:8 }}>{r.sku}</div>
             </div>
@@ -484,7 +504,7 @@ function PriceTable({ rows, title, tone }) {
                   <td style={{ whiteSpace:"nowrap" }}>{r.size}</td>
                   <td className="num">{money(r.srp)}</td>
                   <td className="num" style={{ fontWeight:700, color:T.green }}>{money(w)}</td>
-                  <td className="num">{r.pack} ct</td>
+                  <td className="num">{r.pack} {r.unit||"ct"}</td>
                   <td className="num" style={{ fontWeight:600 }}>{money(w * r.pack)}</td>
                 </tr>
               );
@@ -542,6 +562,7 @@ function Retail() {
           <PriceTable title="Breaded, par-fried in beef tallow" rows={BREADED} tone={T.tallow} />
           <PriceTable title="Refrigerated" rows={SAUCE} tone={T.green} />
           <PriceTable title="Clean produce" rows={PRODUCE} tone={T.greenL} />
+          <PriceTable title="Cleland's Land beef (frozen)" rows={BEEF} tone={T.bark} />
 
           <div style={{ marginBottom:34 }}>
             <div style={{ display:"flex", alignItems:"center", gap:10, marginBottom:12 }}>
@@ -580,7 +601,7 @@ function Retail() {
 
           <div className="card" style={{ background:T.white }}>
             <h3 style={{ fontSize:15, fontWeight:700, marginBottom:10 }}>How we priced it</h3>
-            <p style={{ fontSize:14, color:T.stone, lineHeight:1.7, marginBottom:10 }}>Suggested retail prices are set against what shoppers pay today. Wild walleye fillets currently run about $11–$22 per pound at retail, and Lake Erie perch about $9–$28. Mainstream breaded fish fillets sell for roughly $5.50–$8.50 a box. Wholesale prices above assume a 30% retailer margin.</p>
+            <p style={{ fontSize:14, color:T.stone, lineHeight:1.7, marginBottom:10 }}>Suggested retail prices are set against what shoppers pay today. Wild walleye fillets currently run about $11–$22 per pound at retail, and Lake Erie perch about $9–$28. Mainstream breaded fish fillets sell for roughly $5.50–$8.50 a box. Grass-fed beef sold direct currently averages about $29/lb for ribeye, $26 for strip, $41 for filet and $10 for ground beef. Wholesale prices above assume a 30% retailer margin; beef steaks are sold by the pound at catch weight.</p>
             <p style={{ fontSize:13, color:T.stone, lineHeight:1.7 }}>These are target launch prices for a farm still in development. Final pricing, case packs, minimums and delivery terms will be confirmed in writing before the first order. Distributor pricing is available on request.</p>
           </div>
         </div>
@@ -700,67 +721,169 @@ function Caviar() {
 }
 
 // ── VERDE ENERGY ────────────────────────────────────────────────────────────
+// Ohio solar output: roughly 1,100–1,300 MWh per MW per year depending on mounting.
+// Average US home uses about 10,500 kWh/yr (EIA).
+const SOLAR = [
+  { phase:"Phase 1", mw:1.5, note:"Rooftop arrays on the first campus buildings" },
+  { phase:"Full build", mw:30.9, note:"Rooftop plus ground-mount arrays, financed through power purchase agreements" },
+];
+const roundTo = (n) => { const step = n >= 10000 ? 100 : n >= 1000 ? 50 : 10; return Math.round(n / step) * step; };
+const mwh = (mw, f) => roundTo(mw * f);
+const homes = (mw, f) => roundTo(mw * f * 1000 / 10500);
+const fmt = (n) => n.toLocaleString("en-US");
+
 function Verde() {
   return (
     <>
-      <PageHero label="Verde Energy" title="Nothing leaves the farm" accent="as waste." bg={`linear-gradient(160deg,#173826,${T.greenL})`}
-        sub="Verde Energy is the part of the campus that turns fish solids, plant trimmings and farm waste into biogas, fertilizer and power." />
+      <PageHero label="Verde Energy" title="The power behind" accent="the whole operation." bg={`linear-gradient(160deg,#173826,${T.greenL})`}
+        sub="Verde Energy generates the electricity, heat and fertilizer that every other part of the business runs on, then sells the surplus. It's a business in its own right, not a cost center." />
+
       <section className="sec" style={{ background:T.cream }}>
         <div className="wrap">
-          <div className="label">What It Does</div>
-          <h2 className="h2" style={{ marginBottom:36 }}>Three outputs <em style={{ color:T.green }}>from one digester.</em></h2>
+          <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-end", gap:20, flexWrap:"wrap", marginBottom:30 }}>
+            <div><div className="label">Generating Capacity</div><h2 className="h2">How much power <em style={{ color:T.green }}>we can make.</em></h2></div>
+            <Status>Planned capacity</Status>
+          </div>
+          <div className="g2" style={{ alignItems:"stretch" }}>
+            {SOLAR.map(x => (
+              <div key={x.phase} className="card" style={{ borderTop:`4px solid ${x.mw>10?T.green:T.orange}` }}>
+                <div style={{ fontSize:11, fontWeight:700, letterSpacing:".16em", textTransform:"uppercase", color:x.mw>10?T.green:T.orangeD, marginBottom:10 }}>Solar · {x.phase}</div>
+                <div className="serif" style={{ fontSize:"clamp(52px,7vw,76px)", fontWeight:700, lineHeight:1, marginBottom:8 }}>{x.mw} <span style={{ fontSize:26, color:T.stone }}>MW</span></div>
+                <p style={{ fontSize:14, color:T.stone, lineHeight:1.6, marginBottom:18 }}>{x.note}</p>
+                <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:14, paddingTop:16, borderTop:`1px solid ${T.parchment}` }}>
+                  <div><div style={{ fontSize:10, fontWeight:700, letterSpacing:".12em", textTransform:"uppercase", color:T.stone, marginBottom:4 }}>Est. output / year</div><div style={{ fontSize:18, fontWeight:700 }}>{fmt(mwh(x.mw,1100))}–{fmt(mwh(x.mw,1300))} MWh</div></div>
+                  <div><div style={{ fontSize:10, fontWeight:700, letterSpacing:".12em", textTransform:"uppercase", color:T.stone, marginBottom:4 }}>Equal to powering</div><div style={{ fontSize:18, fontWeight:700 }}>~{fmt(homes(x.mw,1100))}–{fmt(homes(x.mw,1300))} homes</div></div>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="g3" style={{ marginTop:20 }}>
+            <div className="card"><div style={{ fontSize:30, marginBottom:10 }}>🔥</div><h3 className="serif" style={{ fontSize:24, fontWeight:600, marginBottom:6 }}>Biogas digester</h3><p style={{ fontSize:14, color:T.stone, lineHeight:1.65 }}>Fish solids, plant trimmings and manure from the Cleland's Land herd become biogas for heat and electricity around the clock, when the sun isn't shining. Output will be sized once feedstock volumes are engineered.</p></div>
+            <div className="card"><div style={{ fontSize:30, marginBottom:10 }}>❄️</div><h3 className="serif" style={{ fontSize:24, fontWeight:600, marginBottom:6 }}>Using less</h3><p style={{ fontSize:14, color:T.stone, lineHeight:1.65 }}>Radiative cooling paint on roofs and walls reflects sunlight and is expected to cut cooling load by 20–30%, so more of what we generate is left to sell.</p></div>
+            <div className="card"><div style={{ fontSize:30, marginBottom:10 }}>🔌</div><h3 className="serif" style={{ fontSize:24, fontWeight:600, marginBottom:6 }}>Grid-connected</h3><p style={{ fontSize:14, color:T.stone, lineHeight:1.65 }}>Tied into Ohio's PJM grid, so surplus power can be sold and the campus has a backup when it needs one.</p></div>
+          </div>
+          <p style={{ fontSize:12, color:T.stone, marginTop:16, lineHeight:1.6 }}>Output estimates use roughly 1,100–1,300 MWh per megawatt per year for Ohio solar, depending on how panels are mounted, and an average U.S. home's use of about 10,500 kWh a year. Final figures depend on site and engineering.</p>
+        </div>
+      </section>
+
+      <section className="sec" style={{ background:T.green, color:T.white }}>
+        <div className="wrap">
+          <div className="label" style={{ color:T.orangeL }}>What Verde Sells</div>
+          <h2 className="h2" style={{ marginBottom:14 }}>Six ways Verde <em style={{ color:T.orangeL }}>earns.</em></h2>
+          <p className="lead" style={{ color:"rgba(255,255,255,.78)", marginBottom:36 }}>Verde supplies the Consonance companies first, at set internal rates, and sells everything beyond that on the open market.</p>
           <div className="g3">
             {[
-              ["🔥","Biogas & power","An anaerobic digester breaks down farm waste into biogas that can heat the fish tanks and generate electricity for the campus."],
-              ["🌱","Verde fertilizer","What's left after digestion becomes a nutrient-rich fertilizer, used on our own farmland and sold under the Verde Products name."],
-              ["☀️","Solar","On-site solar, added in phases, to offset the farm's power use. Larger arrays are planned through partnerships rather than upfront cost."],
+              ["⚡","Power purchase agreements","Long-term electricity contracts with large Ohio buyers, including the state's fast-growing data center market."],
+              ["📜","Renewable energy credits","Credits from every megawatt-hour of solar and biogas, sold to companies meeting clean-energy targets."],
+              ["🌍","Carbon credits","Credits from capturing methane that would otherwise escape from manure and fish waste."],
+              ["🔥","Compressed biogas & RNG","Upgraded biogas sold as compressed biogas, and later as renewable natural gas into the pipeline."],
+              ["🫧","Food-grade CO₂","Carbon dioxide captured from biogas for greenhouse growing and beverage use."],
+              ["🌱","Verde Products fertilizer","Bagged and bulk liquid fertilizer for farms, landscapers and garden centers, then a branded aquaponic blend."],
             ].map(([e,t,b],i) => (
-              <div key={i} className="card"><div style={{ fontSize:34, marginBottom:12 }}>{e}</div><h3 className="serif" style={{ fontSize:25, fontWeight:600, marginBottom:8 }}>{t}</h3><p style={{ fontSize:14, color:T.stone, lineHeight:1.65 }}>{b}</p></div>
+              <div key={i} style={{ background:"rgba(255,255,255,.08)", border:"1px solid rgba(255,255,255,.12)", borderRadius:20, padding:"24px 22px" }}>
+                <div style={{ fontSize:30, marginBottom:10 }}>{e}</div>
+                <h3 className="serif" style={{ fontSize:24, fontWeight:600, marginBottom:6 }}>{t}</h3>
+                <p style={{ fontSize:14, color:"rgba(255,255,255,.75)", lineHeight:1.65 }}>{b}</p>
+              </div>
             ))}
           </div>
         </div>
       </section>
+
       <section className="sec" style={{ background:T.parchment }}>
-        <div className="wrap g2">
-          <div>
-            <div className="label">Verde Products</div>
-            <h2 className="h2" style={{ marginBottom:16 }}>Fertilizer, <em style={{ color:T.green }}>by the bag or by the load.</em></h2>
-            <p className="lead">We plan to start with bagged and bulk liquid fertilizer for growers, garden centers and landscapers, then add a branded aquaponic blend.</p>
+        <div className="wrap">
+          <div className="label">Rollout</div>
+          <h2 className="h2" style={{ marginBottom:30 }}>Built up <em style={{ color:T.green }}>in stages.</em></h2>
+          <div className="g3">
+            {[
+              ["Stage 1","Phase 1 rooftop solar · bagged digestate and bulk liquid fertilizer"],
+              ["Stage 2","Digester online · compressed biogas · branded Verde Grow Aquaponic Blend"],
+              ["Stage 3","Full 30.9 MW solar · food-grade CO₂ · renewable natural gas · power purchase agreements"],
+            ].map(([n,b],i) => (
+              <div key={n} className="card" style={{ borderTop:`4px solid ${[T.orange,T.greenL,T.green][i]}` }}>
+                <div style={{ fontSize:11, fontWeight:700, letterSpacing:".16em", textTransform:"uppercase", color:[T.orangeD,T.greenL,T.green][i], marginBottom:8 }}>{n}</div>
+                <p style={{ fontSize:15, lineHeight:1.65 }}>{b}</p>
+              </div>
+            ))}
           </div>
-          <div className="card">
-            <Check color={T.green}>Bagged digestate fertilizer</Check>
-            <Check color={T.green}>Bulk liquid fertilizer for farms and landscapers</Check>
-            <Check color={T.green}>Verde Grow Aquaponic Blend (later phase)</Check>
-            <div style={{ marginTop:14, display:"flex", gap:10, flexWrap:"wrap", alignItems:"center" }}><Status>Comes online in a later phase</Status><span style={{ fontSize:13, color:T.stone }}>Pricing quoted on request.</span></div>
-          </div>
+          <p style={{ fontSize:13, color:T.stone, marginTop:18 }}>Fertilizer, energy and credit pricing is quoted per contract.</p>
         </div>
       </section>
-      <CTA title="Growers, landscapers, energy partners." body="If you want fertilizer supply, or you're an energy developer interested in the campus, let's talk." primary={["Contact Verde", mail("Verde Energy inquiry")]} secondary={["See the Plan", href("company")]} />
+
+      <CTA title="Buy from Verde, or build it with us." body="Energy buyers, data centers, energy developers, investors and fertilizer customers: let's talk." primary={["Contact Verde", mail("Verde Energy inquiry")]} secondary={["See the Plan", href("company")]} />
     </>
   );
 }
 
-// ── OHIO FIELDS ─────────────────────────────────────────────────────────────
-function OhioFields() {
+// ── CLELAND'S LAND ──────────────────────────────────────────────────────────
+function ClelandsLand() {
+  const cutEmoji = { "CL-RE-LB":"🥩","CL-NY-LB":"🥩","CL-FM-LB":"🥩","CL-TS-LB":"🥩","CL-BR-LB":"🍖","CL-CR-LB":"🍖","CL-GB-16":"🍔" };
   return (
     <>
-      <PageHero label="Ohio Fields" title="The land" accent="around the farm." bg={`linear-gradient(160deg,#2b1d0c,${T.bark} 60%,${T.tallow})`}
-        sub="Ohio Fields is the traditional farming side of the business: cropland and pasture that close the loop with the indoor farm." />
+      <PageHero label="Cleland's Land" title="Grass-fed Ohio beef," accent="and the land behind it." bg={`linear-gradient(160deg,#2b1d0c,${T.bark} 60%,${T.tallow})`}
+        sub="Cleland's Land is the land and livestock company of Consonance Holdings: a grass-fed beef herd, pasture, hay and cropland across our Ohio land holdings, plus the equipment that works it." />
+
       <section className="sec" style={{ background:T.cream }}>
         <div className="wrap">
-          <div className="g3">
+          <div className="label">What It Covers</div>
+          <h2 className="h2" style={{ marginBottom:30 }}>More than the fields <em style={{ color:T.tallow }}>around the farm.</em></h2>
+          <div className="g4">
             {[
-              ["🌾","Fed by Verde","Fertilizer from the Verde digester goes back onto our own fields, replacing synthetic fertilizer."],
-              ["🚫","Soy-free rotation","A soy-free crop rotation of grains, hay and cover crops that keeps the soil healthy."],
-              ["🚜","Ohio Fields Equipment","Our own equipment company owns and maintains the machinery that works the land and the campus."],
+              ["🐄","Beef cattle","A pasture-raised herd on grass and hay, never fed soy, with no added hormones."],
+              ["🌾","Hay & cropland","Hay for the herd and a soy-free rotation of grains and cover crops."],
+              ["♻️","Fed by Verde","Manure goes to the Verde digester, and Verde fertilizer comes back to our fields."],
+              ["🚜","Equipment","Our own equipment company owns and maintains the machinery across the land and campus."],
             ].map(([e,t,b],i) => (
-              <div key={i} className="card"><div style={{ fontSize:34, marginBottom:12 }}>{e}</div><h3 className="serif" style={{ fontSize:25, fontWeight:600, marginBottom:8 }}>{t}</h3><p style={{ fontSize:14, color:T.stone, lineHeight:1.65 }}>{b}</p></div>
+              <div key={i} className="card"><div style={{ fontSize:32, marginBottom:10 }}>{e}</div><h3 className="serif" style={{ fontSize:23, fontWeight:600, marginBottom:6 }}>{t}</h3><p style={{ fontSize:14, color:T.stone, lineHeight:1.6 }}>{b}</p></div>
             ))}
           </div>
-          <div style={{ marginTop:22 }}><Status>Planned for a later phase</Status></div>
         </div>
       </section>
-      <CTA title="Own land near Central Ohio?" body="We're looking at rural sites for the campus and the fields around it. Landowners, we'd like to hear from you." primary={["Talk Land", mail("Land / site inquiry")]} secondary={["See the Plan", href("company")]} />
+
+      <section className="sec" style={{ background:T.parchment }}>
+        <div className="wrap">
+          <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-end", gap:20, flexWrap:"wrap", marginBottom:30 }}>
+            <div><div className="label">The Beef</div><h2 className="h2">Cuts & pricing</h2></div>
+            <Status>Target launch pricing</Status>
+          </div>
+          <div className="g3">
+            {BEEF.map(p => (
+              <div key={p.sku} className="card" style={{ display:"flex", gap:16, alignItems:"center" }}>
+                <div style={{ fontSize:36 }}>{cutEmoji[p.sku]}</div>
+                <div style={{ flex:1 }}>
+                  <h3 className="serif" style={{ fontSize:23, fontWeight:600 }}>{p.name}</h3>
+                  <div style={{ fontSize:12, color:T.stone }}>{p.size === "per lb" ? "Priced per lb" : p.size}</div>
+                </div>
+                <div style={{ textAlign:"right" }}>
+                  <div className="serif" style={{ fontSize:24, fontWeight:700 }}>{money(p.srp)}</div>
+                  <div style={{ fontSize:9, color:T.stone, letterSpacing:".08em", textTransform:"uppercase" }}>{p.size === "per lb" ? "per lb" : "each"}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="card" style={{ marginTop:24, padding:"26px 24px" }}>
+            <h3 className="serif" style={{ fontSize:28, fontWeight:600, marginBottom:6 }}>Freezer beef by the share</h3>
+            <p style={{ fontSize:14, color:T.stone, lineHeight:1.6, marginBottom:18 }}>Priced per pound of hanging weight, with cut-and-wrap processing included. Take-home meat is typically about 60% of hanging weight.</p>
+            <div className="g3">
+              {FREEZER_BEEF.map(b => (
+                <div key={b.name} style={{ background:T.cream, borderRadius:14, padding:"18px 18px" }}>
+                  <div style={{ fontSize:11, fontWeight:700, letterSpacing:".14em", textTransform:"uppercase", color:T.tallow, marginBottom:6 }}>{b.name} beef</div>
+                  <div className="serif" style={{ fontSize:32, fontWeight:700, lineHeight:1 }}>{money(b.perLb)}<span style={{ fontSize:14, color:T.stone, fontFamily:"'Jost',sans-serif", fontWeight:500 }}> / lb hanging</span></div>
+                  <div style={{ fontSize:13, color:T.stone, marginTop:10, lineHeight:1.55 }}>{b.hang[0]}–{b.hang[1]} lb hanging weight<br />About ${fmt(Math.round(b.perLb*b.hang[0]/10)*10)}–${fmt(Math.round(b.perLb*b.hang[1]/10)*10)} total</div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="card" style={{ marginTop:20, background:T.white }}>
+            <h3 style={{ fontSize:15, fontWeight:700, marginBottom:8 }}>How we priced it</h3>
+            <p style={{ fontSize:14, color:T.stone, lineHeight:1.7 }}>Beef prices are at record highs in 2026. USDA's grass-fed beef report puts direct-to-consumer averages at about $29/lb for ribeye, $26 for strip, $41 for filet mignon, $13 for chuck roast and $10 for ground beef. Central Ohio farms are selling grass-fed freezer beef for about $7.50–$8.00/lb hanging weight with processing included. Our prices sit in those ranges. Final pricing will be set when the herd is ready for market. Wholesale pricing is on the <a href={href("retail")} style={{ color:T.orangeD, fontWeight:600 }}>Retail & Wholesale</a> page.</p>
+          </div>
+        </div>
+      </section>
+
+      <CTA title="Reserve beef, or talk land." body="Join the freezer beef list, or if you own land in Central Ohio, we'd like to hear from you." primary={["Join the Beef List", mail("Cleland's Land beef list")]} secondary={["Talk Land", mail("Land / site inquiry")]} />
     </>
   );
 }
@@ -796,14 +919,14 @@ function Company() {
   const modules = [
     { n:"Module 1", t:"Fish, freezer & greens", c:T.orange, items:["Walleye and perch building","On-site processing and blast-freeze line","Frozen fillets and tallow-fried breaded line","Indoor produce and herb farm","Sturgeon stocked from day one"] },
     { n:"Module 2", t:"Scale the brand", c:T.green, items:["Expanded fish capacity","Sandwich kits and tartar sauce at scale","Regional grocery and foodservice distribution","More growing space"] },
-    { n:"Module 3", t:"Close the loop", c:T.lake, items:["First sturgeon caviar harvests","Verde digester, biogas and fertilizer","On-site solar","Ohio Fields cropland","Full campus complete"] },
+    { n:"Module 3", t:"Close the loop", c:T.lake, items:["First sturgeon caviar harvests","Verde digester, biogas and fertilizer","On-site solar","Cleland's Land herd and cropland","Full campus complete"] },
   ];
   const companies = [
-    ["Orange Holdings LLC","Parent company"],
-    ["Orange Foods LLC","Fish, produce and consumer products"],
+    ["Consonance Holdings","The parent company. It holds all of it."],
+    ["Orange Foods LLC","Fish, produce, caviar and consumer products"],
     ["Orange Brands LLC","Holds and licenses the brand trademarks"],
-    ["Verde Energy LLC","Digester, biogas and solar, with Verde Products LLC for fertilizer"],
-    ["Ohio Fields LLC & Ohio Fields Equipment LLC","Farmland and equipment"],
+    ["Verde Energy LLC","Solar, biogas and energy sales, with Verde Products LLC for fertilizer"],
+    ["Cleland's Land","Beef cattle, land holdings, cropland and equipment"],
     ["Orange Shared Services LLC","HR, payroll, finance and admin for every company"],
   ];
   const now = ["Securing a rural Ohio site","Bringing on an experienced aquaculture operator","Engineering the first building","Talking with Ohio grocers and restaurants","Building research and funding partnerships"];
@@ -837,7 +960,7 @@ function Company() {
           <div>
             <div className="label">How We're Organized</div>
             <h2 className="h2" style={{ marginBottom:16 }}>A family of <em style={{ color:T.orange }}>companies.</em></h2>
-            <p className="lead">Each part of the campus is planned as its own company under one parent, so each can be financed, run and measured on its own.</p>
+            <p className="lead">Each business is planned as its own company under Consonance Holdings, so each can be financed, run and measured on its own, while working as one system.</p>
           </div>
           <div className="card" style={{ padding:"8px 24px" }}>
             {companies.map(([n,r],i) => (
@@ -861,9 +984,9 @@ function Contact() {
     { e:"📬", t:"Customers", b:"Be first to know when our fish hits shelves near you.", cta:"Join the Waitlist", subj:"Waitlist — let me know when you launch" },
     { e:"🛒", t:"Grocers & Restaurants", b:"Samples, case packs, launch allocation and pricing.", cta:"Email Wholesale", subj:"Retail / wholesale inquiry" },
     { e:"✨", t:"Caviar", b:"Chefs and specialty shops who want Ohio sturgeon caviar.", cta:"Join the Caviar List", subj:"Caviar list" },
-    { e:"♻️", t:"Verde & Land", b:"Fertilizer buyers, energy partners and landowners.", cta:"Contact Verde", subj:"Verde Energy inquiry" },
+    { e:"⚡", t:"Verde Energy", b:"Energy buyers, data centers, developers and fertilizer customers.", cta:"Contact Verde", subj:"Verde Energy inquiry" },
+    { e:"🐄", t:"Beef & Land", b:"Freezer beef reservations and Central Ohio landowners.", cta:"Contact Cleland's Land", subj:"Cleland's Land inquiry" },
     { e:"🤝", t:"Investors & Partners", b:"Investors, operators, researchers and suppliers.", cta:"Start a Conversation", subj:"Investor / partner inquiry" },
-    { e:"📰", t:"Press", b:"Media and interview requests.", cta:"Email Press", subj:"Press inquiry" },
   ];
   return (
     <>
@@ -880,7 +1003,7 @@ function Contact() {
             </div>
           ))}
         </div>
-        <p style={{ textAlign:"center", marginTop:30, fontSize:14, color:T.stone }}>Or email us directly at <a href={`mailto:${CONTACT_EMAIL}`} style={{ color:T.orangeD, fontWeight:600 }}>{CONTACT_EMAIL}</a></p>
+        <p style={{ textAlign:"center", marginTop:30, fontSize:14, color:T.stone }}>Press and everything else: email us directly at <a href={`mailto:${CONTACT_EMAIL}`} style={{ color:T.orangeD, fontWeight:600 }}>{CONTACT_EMAIL}</a></p>
       </section>
     </>
   );
@@ -893,7 +1016,7 @@ function Footer() {
       <div className="wrap" style={{ display:"flex", justifyContent:"space-between", flexWrap:"wrap", gap:32 }}>
         <div style={{ maxWidth:320 }}>
           <Logo ink={T.white} />
-          <p style={{ fontSize:13, lineHeight:1.75, marginTop:14 }}>Clean-label frozen fish and indoor-grown produce from a farm in development in rural Ohio.</p>
+          <p style={{ fontSize:13, lineHeight:1.75, marginTop:14 }}>Fish, produce, caviar, grass-fed beef and renewable energy, in development in rural Ohio.</p>
           <a href={`mailto:${CONTACT_EMAIL}`} style={{ display:"inline-block", fontSize:13, marginTop:10, color:T.orangeL }}>{CONTACT_EMAIL}</a>
         </div>
         <div style={{ display:"grid", gridTemplateColumns:"repeat(2,minmax(130px,auto))", gap:"10px 40px" }}>
@@ -901,21 +1024,21 @@ function Footer() {
         </div>
       </div>
       <div className="wrap" style={{ borderTop:"1px solid rgba(255,255,255,.08)", marginTop:32, paddingTop:20, fontSize:11, color:"rgba(255,255,255,.38)", display:"flex", justifyContent:"space-between", flexWrap:"wrap", gap:10 }}>
-        <span>© {new Date().getFullYear()} Orange Foods LLC. Rural Ohio.</span>
+        <span>© {new Date().getFullYear()} Orange Foods LLC, a Consonance Holdings company. Rural Ohio.</span>
         <span>Products and prices shown are in development and not yet available for sale.</span>
       </div>
     </footer>
   );
 }
 
-const VIEWS = { home:Home, fish:Fish, retail:Retail, produce:Produce, caviar:Caviar, verde:Verde, ohiofields:OhioFields, company:Company, contact:Contact };
+const VIEWS = { home:Home, fish:Fish, retail:Retail, produce:Produce, caviar:Caviar, verde:Verde, clelandsland:ClelandsLand, company:Company, contact:Contact };
 
 export default function App() {
   const route = useRoute();
   const View = VIEWS[route];
   useEffect(() => {
     const name = PAGES.find(([k]) => k === route)[1];
-    document.title = route === "home" ? "Orange Foods LLC — Fish, Produce & Energy from Rural Ohio" : `${name} — Orange Foods LLC`;
+    document.title = route === "home" ? "Orange Foods LLC — Food and Energy, Grown in Ohio" : `${name} — Orange Foods LLC`;
   }, [route]);
   return (
     <>
