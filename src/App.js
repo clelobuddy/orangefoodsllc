@@ -78,10 +78,13 @@ const G = `
 
 // ── Routing (hash-based, so every link works on static hosting) ─────────────
 const PAGES = [
-  ["home","Home"], ["fish","Frozen Fish"], ["retail","Retail & Wholesale"], ["produce","Clean Produce"],
-  ["caviar","Caviar"], ["verde","Verde Energy"], ["clelandsland","Cleland's Land"], ["company","About"], ["contact","Contact"],
+  ["home","Home"], ["orangefoods","Orange Foods"], ["fish","Frozen Fish"], ["produce","Clean Produce"], ["caviar","Caviar"],
+  ["verde","Verde Energy"], ["clelandsland","Cleland's Land"], ["retail","Retail & Wholesale"], ["company","About"], ["contact","Contact"],
 ];
-const NAV = PAGES.filter(([k]) => !["home","contact"].includes(k));
+// Top menu is organized by company; Orange Foods' product pages live under it.
+const NAV = [["orangefoods","Orange Foods"],["verde","Verde Energy"],["clelandsland","Cleland's Land"],["retail","Retail & Wholesale"],["company","About"]];
+const UNDER_ORANGE = ["fish","produce","caviar"];
+const navActive = (k, route) => k === route || (k === "orangefoods" && UNDER_ORANGE.includes(route));
 const href = (key) => `#/${key}`;
 const mail = (subject, body = "") => `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(subject)}${body ? `&body=${encodeURIComponent(body)}` : ""}`;
 
@@ -180,7 +183,7 @@ function Nav({ route, darkHero }) {
       <nav style={{ position:"fixed", top:0, left:0, right:0, zIndex:100, height:68, padding:"0 24px", display:"flex", alignItems:"center", justifyContent:"space-between", background:solid?"rgba(250,247,242,.97)":"transparent", backdropFilter:solid?"blur(14px)":"none", borderBottom:solid?"1px solid rgba(0,0,0,.07)":"none", transition:"all .3s ease" }}>
         <Logo ink={ink} />
         <div className="desk" style={{ gap:22, alignItems:"center" }}>
-          {NAV.map(([k,l]) => <a key={k} href={href(k)} className="navlink" style={{ color:route===k?T.orange:ink }}>{l}</a>)}
+          {NAV.map(([k,l]) => <a key={k} href={href(k)} className="navlink" style={{ color:navActive(k,route)?T.orange:ink }}>{l}</a>)}
           <a href={href("contact")} className="btn btn-o" style={{ padding:"10px 18px", fontSize:12 }}>Contact</a>
         </div>
         <button className="mob" onClick={() => setOpen(o=>!o)} aria-label="Open menu" style={{ flexDirection:"column", gap:5, background:"none", border:"none", cursor:"pointer", padding:6 }}>
@@ -189,18 +192,19 @@ function Nav({ route, darkHero }) {
       </nav>
       {open && (
         <div style={{ position:"fixed", top:68, left:0, right:0, zIndex:99, background:"rgba(250,247,242,.99)", padding:"6px 24px 24px", borderBottom:"1px solid rgba(0,0,0,.07)", maxHeight:"calc(100vh - 68px)", overflowY:"auto" }}>
-          {PAGES.map(([k,l]) => <a key={k} href={href(k)} style={{ display:"block", fontSize:17, fontWeight:500, padding:"13px 0", borderBottom:"1px solid rgba(0,0,0,.06)", textDecoration:"none", color:route===k?T.orange:T.charcoal }}>{l}</a>)}
+          {PAGES.map(([k,l]) => { const sub = UNDER_ORANGE.includes(k); return <a key={k} href={href(k)} style={{ display:"block", fontSize:sub?15:17, fontWeight:sub?400:500, padding:sub?"10px 0 10px 18px":"13px 0", borderBottom:"1px solid rgba(0,0,0,.06)", textDecoration:"none", color:route===k?T.orange:T.charcoal }}>{sub ? "— " : ""}{l}</a>; })}
         </div>
       )}
     </>
   );
 }
 
-function PageHero({ label, title, accent, sub, bg, children }) {
+function PageHero({ label, title, accent, sub, bg, parent, children }) {
   return (
     <section style={{ background:bg, color:T.white, padding:"150px 28px 84px", position:"relative", overflow:"hidden" }}>
       <div style={{ position:"absolute", inset:0, backgroundImage:`radial-gradient(circle at 88% 15%,${T.orange}30 0%,transparent 45%)` }} />
       <div className="wrap" style={{ position:"relative" }}>
+        {parent && <a href={href(parent[1])} style={{ display:"inline-block", fontSize:12, fontWeight:600, letterSpacing:".08em", color:"rgba(255,255,255,.75)", textDecoration:"none", marginBottom:12 }}>← {parent[0]}</a>}
         <div className="label" style={{ color:T.orangeL }}>{label}</div>
         <h1 className="h1" style={{ marginBottom:20, maxWidth:900 }}>{title} {accent && <em style={{ color:T.orangeL }}>{accent}</em>}</h1>
         {sub && <p style={{ fontSize:"clamp(16px,2vw,18px)", lineHeight:1.75, color:"rgba(255,255,255,.82)", maxWidth:640, fontWeight:300 }}>{sub}</p>}
@@ -249,7 +253,7 @@ function Marquee() {
 const COMPANIES = [
   { name:"Orange Foods", legal:"Orange Foods LLC", e:"🍊", c:T.orange, tag:"Fish, produce & caviar",
     body:"Ohio-raised walleye and perch, frozen and tallow-fried breaded fillets, indoor-grown produce and herbs, and sturgeon caviar.",
-    links:[["Frozen Fish","fish"],["Clean Produce","produce"],["Caviar","caviar"],["Retail & Wholesale","retail"]] },
+    links:[["Orange Foods","orangefoods"],["Frozen Fish","fish"],["Clean Produce","produce"],["Caviar","caviar"]] },
   { name:"Verde Energy", legal:"Verde Energy LLC · Verde Products", e:"⚡", c:T.green, tag:"Power, fuel & fertilizer",
     body:"Up to 30.9 MW of planned solar plus a biogas digester. Powers the whole operation and sells surplus power, credits, gas and fertilizer.",
     links:[["Verde Energy","verde"]] },
@@ -374,6 +378,73 @@ function Home() {
   );
 }
 
+// ── ORANGE FOODS (company page) ─────────────────────────────────────────────
+function OrangeFoods() {
+  const from = (rows) => money(Math.min(...rows.map(r => r.srp)));
+  const lines = [
+    { k:"fish", e:"🐟", t:"Frozen Fish", c:T.lake, b:"Ohio-raised walleye and yellow perch, sold as frozen fillets and as breaded fillets par-fried in 100% beef tallow. Plus a fish sandwich kit and herb tartar sauce.", items:["Walleye & perch fillets","Tallow-fried breaded fillets","Perch fish fry pack","Walleye sandwich kit","Herb tartar sauce"], price:`From ${from([...RAW,...BREADED])}` },
+    { k:"produce", e:"🥬", t:"Clean Produce", c:T.green, b:"Grown indoors on the same clean water loop as the fish, away from the field runoff behind most produce recalls. Every lot coded.", items:["Cucumbers","Living butter lettuce","Cherry tomatoes","Basil, dill & parsley"], price:`From ${from(PRODUCE)}` },
+    { k:"caviar", e:"✨", t:"Sturgeon Caviar", c:T.bark, b:"Sterlet and Siberian sturgeon, stocked the day the farm opens. Ohio's cool groundwater suits them, and the caviar is worth the wait.", items:["Sterlet caviar: first harvest Years 3–4","Siberian caviar: first harvest Years 5–7","Sturgeon fillets in the meantime"], price:"Priced at first harvest" },
+  ];
+  return (
+    <>
+      <PageHero label="Orange Foods LLC" title="Fish, produce and caviar," accent="raised in Ohio." bg={`linear-gradient(160deg,${T.lakeD},${T.lake} 50%,${T.green})`}
+        sub="Orange Foods is our food company: an indoor fish farm and produce operation in rural Ohio, with its own processing and freezing on site. Everything we sell is traceable to the tank or grow room it came from.">
+        <div className="btns" style={{ display:"flex", gap:12, marginTop:30, flexWrap:"wrap" }}>
+          <a href={href("retail")} className="btn btn-o">Retail & Wholesale</a>
+          <a href={href("fish")} className="btn btn-l">See the Fish</a>
+        </div>
+      </PageHero>
+
+      <section className="sec" style={{ background:T.cream }}>
+        <div className="wrap">
+          <div className="label">Product Lines</div>
+          <h2 className="h2" style={{ marginBottom:36 }}>Three lines, <em style={{ color:T.orange }}>one farm.</em></h2>
+          <div className="g3" style={{ alignItems:"stretch" }}>
+            {lines.map(l => (
+              <div key={l.k} className="card" style={{ borderTop:`5px solid ${l.c}`, display:"flex", flexDirection:"column" }}>
+                <div style={{ fontSize:36, marginBottom:10 }}>{l.e}</div>
+                <h3 className="serif" style={{ fontSize:30, fontWeight:700, marginBottom:8 }}>{l.t}</h3>
+                <p style={{ fontSize:14, color:T.stone, lineHeight:1.7, marginBottom:16 }}>{l.b}</p>
+                <div style={{ flex:1, marginBottom:18 }}>{l.items.map(it => <Check key={it} color={l.c}>{it}</Check>)}</div>
+                <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", gap:10, paddingTop:16, borderTop:`1px solid ${T.parchment}`, flexWrap:"wrap" }}>
+                  <span style={{ fontSize:13, fontWeight:700, color:T.charcoal }}>{l.price}</span>
+                  <a href={href(l.k)} style={{ fontSize:12, fontWeight:700, letterSpacing:".08em", textTransform:"uppercase", textDecoration:"none", color:l.c }}>Explore {l.t} →</a>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="sec" style={{ background:T.lake, color:T.white }}>
+        <div className="wrap">
+          <div className="label" style={{ color:T.orangeL }}>How We Grow</div>
+          <h2 className="h2" style={{ marginBottom:36 }}>From tank to <em style={{ color:T.orangeL }}>freezer case.</em></h2>
+          <div className="g4">
+            {[
+              ["🐟","Raise","Walleye, perch and sturgeon in recirculating tanks, with zero antibiotics and no hormones."],
+              ["🌿","Grow","Water from the fish tanks feeds our indoor produce and herbs."],
+              ["❄️","Process","Fish are filleted, breaded, par-fried in beef tallow and blast-frozen on site."],
+              ["🏷️","Trace","Every package carries a lot code back to the tank or grow room it came from."],
+            ].map(([e,t,b],i) => (
+              <div key={t} style={{ background:"rgba(255,255,255,.08)", border:"1px solid rgba(255,255,255,.14)", borderRadius:20, padding:"24px 20px" }}>
+                <div style={{ fontSize:11, fontWeight:700, letterSpacing:".14em", color:T.orangeL, marginBottom:12 }}>0{i+1}</div>
+                <div style={{ fontSize:30, marginBottom:10 }}>{e}</div>
+                <h3 className="serif" style={{ fontSize:24, fontWeight:600, marginBottom:6 }}>{t}</h3>
+                <p style={{ fontSize:13, color:"rgba(255,255,255,.75)", lineHeight:1.65 }}>{b}</p>
+              </div>
+            ))}
+          </div>
+          <p style={{ fontSize:14, color:"rgba(255,255,255,.75)", marginTop:26, lineHeight:1.7, maxWidth:760 }}>Orange Foods runs on power and heat from <a href={href("verde")} style={{ color:T.orangeL, fontWeight:600 }}>Verde Energy</a>, and its fish solids go back to Verde's digester to fertilize <a href={href("clelandsland")} style={{ color:T.orangeL, fontWeight:600 }}>Cleland's Land</a>.</p>
+        </div>
+      </section>
+
+      <CTA title="Carry Orange Foods." body="Grocers, restaurants and fish fries: see case packs and wholesale pricing, or ask for a sample." primary={["Retail & Wholesale", href("retail")]} secondary={["Contact Us", href("contact")]} />
+    </>
+  );
+}
+
 // ── FROZEN FISH ─────────────────────────────────────────────────────────────
 function ProductCard({ p, tone, extra }) {
   return (
@@ -399,7 +470,7 @@ function ProductCard({ p, tone, extra }) {
 function Fish() {
   return (
     <>
-      <PageHero label="Frozen Fish" title="Walleye and perch," accent="frozen at the farm." bg={`linear-gradient(160deg,${T.lakeD},${T.lake})`}
+      <PageHero parent={["Orange Foods","orangefoods"]} label="Frozen Fish" title="Walleye and perch," accent="frozen at the farm." bg={`linear-gradient(160deg,${T.lakeD},${T.lake})`}
         sub="Two product lines from the same Ohio-raised fish: plain frozen fillets for the home cook, and crispy breaded fillets par-fried in 100% beef tallow for the freezer-to-oven crowd." />
 
       <section className="sec" style={{ background:T.parchment }}>
@@ -699,7 +770,7 @@ function Produce() {
   const emoji = { "OP-BL-01":"🥬", "OP-CU-01":"🥒", "OP-CT-10":"🍅", "OP-BA-075":"🌿", "OP-DI-075":"🌱", "OP-PA-075":"☘️" };
   return (
     <>
-      <PageHero label="Clean Produce" title="The produce aisle has a" accent="recall problem." bg={`linear-gradient(160deg,#173826,${T.green})`}
+      <PageHero parent={["Orange Foods","orangefoods"]} label="Clean Produce" title="The produce aisle has a" accent="recall problem." bg={`linear-gradient(160deg,#173826,${T.green})`}
         sub="Cucumbers, leafy greens and tomatoes show up again and again in food-safety recalls, usually traced back to open fields and irrigation water. We grow ours indoors on the same clean water loop as our fish." />
       <section className="sec" style={{ background:T.cream }}>
         <div className="wrap">
@@ -756,7 +827,7 @@ function Produce() {
 function Caviar() {
   return (
     <>
-      <PageHero label="Sturgeon Caviar" title="The long game," accent="started on day one." bg={`linear-gradient(160deg,#120d08,#2b1d0c 60%,${T.bark})`}
+      <PageHero parent={["Orange Foods","orangefoods"]} label="Sturgeon Caviar" title="The long game," accent="started on day one." bg={`linear-gradient(160deg,#120d08,#2b1d0c 60%,${T.bark})`}
         sub="Sturgeon take years to produce caviar, so ours go in the water the day the farm opens. Ohio's naturally cool groundwater is well suited to them." />
       <section className="sec" style={{ background:T.cream }}>
         <div className="wrap">
@@ -1129,7 +1200,7 @@ function Footer() {
   );
 }
 
-const VIEWS = { home:Home, fish:Fish, retail:Retail, produce:Produce, caviar:Caviar, verde:Verde, clelandsland:ClelandsLand, company:Company, contact:Contact };
+const VIEWS = { home:Home, orangefoods:OrangeFoods, fish:Fish, retail:Retail, produce:Produce, caviar:Caviar, verde:Verde, clelandsland:ClelandsLand, company:Company, contact:Contact };
 
 export default function App() {
   const route = useRoute();
