@@ -56,6 +56,8 @@ const G = `
   .tscroll { overflow-x:auto; border-radius:16px; border:1px solid rgba(0,0,0,.06); }
   .desk { display:flex; }
   .mob { display:none; }
+  .founder { display:grid; grid-template-columns:auto 1fr; gap:44px; align-items:center; }
+  @media (max-width:760px) { .founder { grid-template-columns:1fr; gap:26px; } }
   .tmob { display:none; }
   .prow { background:${T.white}; border:1px solid rgba(0,0,0,.06); border-radius:14px; padding:16px; margin-bottom:10px; }
   .pgrid { display:grid; grid-template-columns:1fr 1fr; gap:10px 14px; margin-top:12px; padding-top:12px; border-top:1px solid ${T.parchment}; }
@@ -75,7 +77,7 @@ const G = `
 // ── Routing (hash-based, so every link works on static hosting) ─────────────
 const PAGES = [
   ["home","Home"], ["fish","Frozen Fish"], ["retail","Retail & Wholesale"], ["produce","Clean Produce"],
-  ["caviar","Caviar"], ["verde","Verde Energy"], ["ohiofields","Ohio Fields"], ["company","Our Plan"], ["contact","Contact"],
+  ["caviar","Caviar"], ["verde","Verde Energy"], ["ohiofields","Ohio Fields"], ["company","About"], ["contact","Contact"],
 ];
 const NAV = PAGES.filter(([k]) => !["home","contact"].includes(k));
 const href = (key) => `#/${key}`;
@@ -305,6 +307,8 @@ function Home() {
           </div>
         </div>
       </section>
+
+      <Founder compact />
 
       <CTA title="Stock Ohio-raised fish." body="We're lining up our first grocery and restaurant partners now. See the catalog, case packs and pricing." primary={["View Retail Catalog", href("retail")]} secondary={["Contact Us", href("contact")]} />
     </>
@@ -726,6 +730,32 @@ function OhioFields() {
   );
 }
 
+// ── FOUNDER ─────────────────────────────────────────────────────────────────
+const LINKEDIN = "https://www.linkedin.com/in/erclelan6/";
+
+function Founder({ compact }) {
+  return (
+    <section className="sec" style={{ background:compact?T.cream:T.white }}>
+      <div className="wrap founder">
+        <div style={{ width:180, height:180, borderRadius:"50%", background:`linear-gradient(135deg,${T.orange},${T.orangeD})`, display:"flex", alignItems:"center", justifyContent:"center", boxShadow:`0 12px 40px ${T.orange}44`, flexShrink:0, margin:"0 auto" }}>
+          <span className="serif" style={{ fontSize:68, fontWeight:700, color:T.white, letterSpacing:".02em" }}>EC</span>
+        </div>
+        <div>
+          <div className="label">Leadership</div>
+          <h2 className="h2" style={{ marginBottom:6 }}>Eric Cleland</h2>
+          <div style={{ fontSize:13, fontWeight:700, letterSpacing:".14em", textTransform:"uppercase", color:T.orangeD, marginBottom:18 }}>Founder & President</div>
+          <p className="lead" style={{ marginBottom:compact?20:14 }}>Eric is an HR and operations leader based in New Albany, Ohio. He manages HR systems and payroll for a multi-location company with more than 1,000 employees across roughly 120 locations, and holds the SPHR (Senior Professional in Human Resources) certification and a B.S. in Human Resources Management from Franklin University.</p>
+          {!compact && <p className="lead" style={{ marginBottom:20 }}>As founder of Orange Foods, Eric leads the company's strategy, partnerships and fundraising, and is building the team, including an experienced aquaculture operator, that will run the farm.</p>}
+          <div className="btns" style={{ display:"flex", gap:12, flexWrap:"wrap" }}>
+            <a href={LINKEDIN} target="_blank" rel="noopener noreferrer" className="btn btn-g">Connect on LinkedIn ↗</a>
+            {compact && <a href={href("company")} className="btn btn-o">About Orange Foods</a>}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 // ── COMPANY / PLAN ──────────────────────────────────────────────────────────
 function Company() {
   const modules = [
@@ -744,7 +774,7 @@ function Company() {
   const now = ["Securing a rural Ohio site","Bringing on an experienced aquaculture operator","Engineering the first building","Talking with Ohio grocers and restaurants","Building research and funding partnerships"];
   return (
     <>
-      <PageHero label="Our Plan" title="One campus," accent="built in modules." bg={`linear-gradient(160deg,${T.lakeD},${T.green})`}
+      <PageHero label="About · Our Plan" title="One campus," accent="built in modules." bg={`linear-gradient(160deg,${T.lakeD},${T.green})`}
         sub="The full campus is designed as one site. We build it a piece at a time, and each module proves itself before the next one goes up." />
       <section className="sec" style={{ background:T.parchment }}>
         <div className="wrap">
@@ -766,6 +796,7 @@ function Company() {
           </div>
         </div>
       </section>
+      <Founder />
       <section className="sec" style={{ background:T.cream }}>
         <div className="wrap g2" style={{ alignItems:"start" }}>
           <div>
