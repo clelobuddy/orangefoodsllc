@@ -1070,7 +1070,7 @@ function Company() {
         </div>
       </section>
       <Founder />
-      <Companies label="Our Companies" title="Three companies," accent="one campus." lead="Each business is its own company, so each can be financed, run and measured on its own, while working together as one system." />
+      <Companies label="Our Companies" title="Three companies," accent="one campus." lead="Each business is its own company, so each can be financed, run and measured on its own, while working together as one system. All three are held by our parent company, Consonance Holdings. The name's a play on words: it holds everything, and keeps it all working in harmony." />
       <CTA title="Help us build it." body="Investors, aquaculture operators, researchers and suppliers: we want to hear from you." primary={["Investor / Partner Inquiry", mail("Investor / partner inquiry")]} secondary={["Contact Page", href("contact")]} />
     </>
   );
