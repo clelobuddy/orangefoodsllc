@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 
 // ── Change this to the inbox you actually check ─────────────────────────────
-const CONTACT_EMAIL = "founders@orangefoodsllc.com";
+const CONTACT_EMAIL = "orangefoodsllc@gmail.com";
 
 // ── Pricing model ───────────────────────────────────────────────────────────
 // Suggested retail (SRP) is set against current market prices (Oct 2026).
