@@ -869,8 +869,7 @@ const DIGESTER = [
 ];
 const dig = (x, k) => x.head * PER_HEAD[k] + x.tons * PER_TON[k]; // kWh per year
 const SOLAR = [
-  { phase:"Phase 1", mw:1.5, note:"Rooftop arrays on the first campus buildings" },
-  { phase:"Full build", mw:30.9, note:"Rooftop plus ground-mount arrays, financed through power purchase agreements" },
+  { phase:"Campus array", mw:30.9, note:"Rooftop and ground-mount arrays across the campus" },
 ];
 const roundTo = (n) => { const step = n >= 10000 ? 100 : n >= 100 ? 10 : 1; return Math.round(n / step) * step; };
 const mwh = (mw, f) => roundTo(mw * f);
@@ -901,6 +900,15 @@ function Verde() {
                 </div>
               </div>
             ))}
+            <div className="card" style={{ borderTop:`4px solid ${T.tallow}`, display:"flex", flexDirection:"column" }}>
+              <div style={{ fontSize:11, fontWeight:700, letterSpacing:".16em", textTransform:"uppercase", color:T.tallow, marginBottom:10 }}>Biogas digester · day and night</div>
+              <div className="serif" style={{ fontSize:"clamp(52px,7vw,76px)", fontWeight:700, lineHeight:1, marginBottom:8 }}>24/7</div>
+              <p style={{ fontSize:14, color:T.stone, lineHeight:1.6, marginBottom:18, flex:1 }}>Runs when the sun doesn't, on manure, fish solids, plant trimmings and food waste. Steady output depends on how much food waste it takes in; see the scenarios below.</p>
+              <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:14, paddingTop:16, borderTop:`1px solid ${T.parchment}` }}>
+                <div><div style={{ fontSize:10, fontWeight:700, letterSpacing:".12em", textTransform:"uppercase", color:T.stone, marginBottom:4 }}>Steady output</div><div style={{ fontSize:18, fontWeight:700 }}>up to ~{fmt(roundTo(dig(DIGESTER[2],1)/8760))} kW</div></div>
+                <div><div style={{ fontSize:10, fontWeight:700, letterSpacing:".12em", textTransform:"uppercase", color:T.stone, marginBottom:4 }}>Plus</div><div style={{ fontSize:18, fontWeight:700 }}>Heat for the fish tanks</div></div>
+              </div>
+            </div>
           </div>
           <div className="g2" style={{ marginTop:20, alignItems:"stretch" }}>
             <div className="card"><div style={{ fontSize:30, marginBottom:10 }}>❄️</div><h3 className="serif" style={{ fontSize:24, fontWeight:600, marginBottom:6 }}>Using less</h3><p style={{ fontSize:14, color:T.stone, lineHeight:1.65 }}>Radiative cooling paint on roofs and walls reflects sunlight and is expected to cut cooling load by 20–30%, so more of what we generate is left to sell.</p></div>
@@ -968,13 +976,13 @@ function Verde() {
 
       <section className="sec" style={{ background:T.parchment }}>
         <div className="wrap">
-          <div className="label">Rollout</div>
-          <h2 className="h2" style={{ marginBottom:30 }}>Built up <em style={{ color:T.green }}>in stages.</em></h2>
+          <div className="label">Product Rollout</div>
+          <h2 className="h2" style={{ marginBottom:30 }}>What Verde sells, <em style={{ color:T.green }}>year by year.</em></h2>
           <div className="g3">
             {[
-              ["Stage 1","Phase 1 rooftop solar · bagged digestate and bulk liquid fertilizer"],
-              ["Stage 2","Digester online · food-waste intake · compressed biogas · branded Verde Grow Aquaponic Blend"],
-              ["Stage 3","Full 30.9 MW solar · food-grade CO₂ · renewable natural gas · power purchase agreements"],
+              ["Year 1","Power to the campus and the grid · energy credits · bagged digestate and bulk liquid fertilizer"],
+              ["Year 2","Food-waste intake · compressed biogas · branded Verde Grow Aquaponic Blend"],
+              ["Year 3+","Food-grade CO₂ · renewable natural gas · long-term power purchase agreements"],
             ].map(([n,b],i) => (
               <div key={n} className="card" style={{ borderTop:`4px solid ${[T.orange,T.greenL,T.green][i]}` }}>
                 <div style={{ fontSize:11, fontWeight:700, letterSpacing:".16em", textTransform:"uppercase", color:[T.orangeD,T.greenL,T.green][i], marginBottom:8 }}>{n}</div>
@@ -1111,15 +1119,15 @@ function Founder({ compact }) {
 // ── COMPANY / PLAN ──────────────────────────────────────────────────────────
 function Company() {
   const modules = [
-    { n:"Module 1", t:"Fish, freezer & greens", c:T.orange, items:["Walleye and perch building","On-site processing and blast-freeze line","Frozen fillets and tallow-fried breaded line","Indoor produce and herb farm","Sturgeon stocked from day one"] },
-    { n:"Module 2", t:"Scale the brand", c:T.green, items:["Expanded fish capacity","Sandwich kits and tartar sauce at scale","Regional grocery and foodservice distribution","More growing space"] },
-    { n:"Module 3", t:"Close the loop", c:T.lake, items:["First sturgeon caviar harvests","Verde digester, biogas and fertilizer","On-site solar","Cleland's Land herd and cropland","Full campus complete"] },
+    { n:"Orange Foods", t:"Fish, produce & caviar", c:T.orange, items:["Walleye and perch buildings","Sturgeon stocked from day one for caviar","On-site processing and blast-freeze line","Frozen and tallow-fried breaded fish lines","Indoor produce and herb farm"] },
+    { n:"Verde Energy", t:"Power, fuel & fertilizer", c:T.green, items:["30.9 MW of rooftop and ground-mount solar","Biogas digester running day and night","Heat for the fish tanks","Verde Products fertilizer","Surplus power and credits for sale"] },
+    { n:"Cleland's Land", t:"Beef, land & equipment", c:T.tallow, items:["Grass-fed, soy-free beef herd","Hay and soy-free cropland","Fields fertilized by Verde","Equipment for the land and campus"] },
   ];
-  const now = ["Securing a rural Ohio site","Bringing on an experienced aquaculture operator","Engineering the first building","Talking with Ohio grocers and restaurants","Building research and funding partnerships"];
+  const now = ["Securing a rural Ohio site","Bringing on an experienced aquaculture operator","Engineering the full campus","Talking with Ohio grocers and restaurants","Building research and funding partnerships"];
   return (
     <>
-      <PageHero label="About · Our Plan" title="One campus," accent="built in modules." bg={`linear-gradient(160deg,${T.lakeD},${T.green})`}
-        sub="The full campus is designed as one site. We build it a piece at a time, and each module proves itself before the next one goes up." />
+      <PageHero label="About · Our Plan" title="One campus," accent="built as a whole." bg={`linear-gradient(160deg,${T.lakeD},${T.green})`}
+        sub="Fish, produce, caviar, beef and the energy that powers them, designed and built together on one site in rural Ohio. Every part depends on the others, so they go up together." />
       <section className="sec" style={{ background:T.parchment }}>
         <div className="wrap">
           <div className="g3">
